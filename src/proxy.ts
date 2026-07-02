@@ -11,21 +11,33 @@ const protectedPrefixes = [
   "/settings",
 ];
 
+function getSafeNextPath(next?: string | null) {
+  if (!next?.startsWith("/") || next.startsWith("//")) return "/dashboard";
+  return next;
+}
+
 export function proxy(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const { pathname, search } = request.nextUrl;
   const hasSession = Boolean(request.cookies.get(SESSION_COOKIE_NAME)?.value);
   const isProtected = protectedPrefixes.some(
     (prefix) => pathname === prefix || pathname.startsWith(`${prefix}/`),
   );
 
+  if (pathname === "/") {
+    return NextResponse.redirect(
+      new URL(hasSession ? "/dashboard" : "/login", request.url),
+    );
+  }
+
   if (isProtected && !hasSession) {
     const loginUrl = new URL("/login", request.url);
-    loginUrl.searchParams.set("next", pathname);
+    loginUrl.searchParams.set("next", `${pathname}${search}`);
     return NextResponse.redirect(loginUrl);
   }
 
   if (pathname === "/login" && hasSession) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+    const nextPath = getSafeNextPath(request.nextUrl.searchParams.get("next"));
+    return NextResponse.redirect(new URL(nextPath, request.url));
   }
 
   return NextResponse.next();
@@ -33,6 +45,7 @@ export function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
+    "/",
     "/login",
     "/dashboard/:path*",
     "/emails/:path*",
