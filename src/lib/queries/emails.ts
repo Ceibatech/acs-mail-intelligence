@@ -1,5 +1,5 @@
 import type { RowDataPacket } from "mysql2/promise";
-import { getDb, queryOne, queryRows, tableExists } from "@/lib/db";
+import { columnExists, getDb, queryOne, queryRows, tableExists } from "@/lib/db";
 import {
   clampPage,
   clampPageSize,
@@ -212,9 +212,13 @@ export async function getEmailDetail(id: string, includeRawPath: boolean) {
   };
 
   if (await tableExists("email_tags")) {
+    const tagSourceSelect = (await columnExists("email_tags", "tag_source"))
+      ? "tag_source"
+      : "NULL AS tag_source";
+
     email.tags = await queryRows<RowDataPacket & MessageTag>(
       `
-      SELECT id, tag, category, confidence, tag_source, created_at
+      SELECT id, tag, category, confidence, ${tagSourceSelect}, created_at
       FROM email_tags
       WHERE message_id = ?
       ORDER BY created_at DESC
@@ -224,11 +228,15 @@ export async function getEmailDetail(id: string, includeRawPath: boolean) {
   }
 
   if (await tableExists("followups")) {
+    const titleSelect = (await columnExists("followups", "title"))
+      ? "title"
+      : "subject AS title";
+
     email.followups = await queryRows<RowDataPacket & LinkedFollowup>(
       `
       SELECT
         id,
-        title,
+        ${titleSelect},
         client_name,
         status,
         priority,
@@ -261,13 +269,34 @@ export async function createMessageTag({
     return { saved: false, reason: "La table email_tags n'existe pas." };
   }
 
+  const columns = ["message_id", "tag", "category"];
+  const placeholders = ["?", "?", "?"];
+  const values: SqlValue[] = [messageId, tag, category || tag];
+
+  if (await columnExists("email_tags", "confidence")) {
+    columns.push("confidence");
+    placeholders.push("?");
+    values.push(1);
+  }
+
+  if (await columnExists("email_tags", "tag_source")) {
+    columns.push("tag_source");
+    placeholders.push("?");
+    values.push(source);
+  }
+
+  if (await columnExists("email_tags", "created_at")) {
+    columns.push("created_at");
+    placeholders.push("NOW()");
+  }
+
   const [result] = await getDb().execute(
     `
     INSERT INTO email_tags
-      (message_id, tag, category, confidence, tag_source, created_at)
-    VALUES (?, ?, ?, ?, ?, NOW())
+      (${columns.join(", ")})
+    VALUES (${placeholders.join(", ")})
     `,
-    [messageId, tag, category || tag, 1, source],
+    values,
   );
 
   return { saved: true, result };

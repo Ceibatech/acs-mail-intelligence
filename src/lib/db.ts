@@ -6,6 +6,7 @@ import mysql, {
 
 let pool: Pool | null = null;
 const tableExistenceCache = new Map<string, boolean>();
+const columnExistenceCache = new Map<string, boolean>();
 
 const expectedTables = [
   "mailboxes",
@@ -108,6 +109,28 @@ export async function tableExists(tableName: string) {
 
   const exists = Number(row?.total || 0) > 0;
   tableExistenceCache.set(tableName, exists);
+  return exists;
+}
+
+export async function columnExists(tableName: string, columnName: string) {
+  const key = `${tableName}.${columnName}`;
+  if (columnExistenceCache.has(key)) {
+    return columnExistenceCache.get(key) ?? false;
+  }
+
+  const row = await queryOne<RowDataPacket & { total: number }>(
+    `
+    SELECT COUNT(*) AS total
+    FROM information_schema.columns
+    WHERE table_schema = DATABASE()
+      AND table_name = ?
+      AND column_name = ?
+    `,
+    [tableName, columnName],
+  );
+
+  const exists = Number(row?.total || 0) > 0;
+  columnExistenceCache.set(key, exists);
   return exists;
 }
 

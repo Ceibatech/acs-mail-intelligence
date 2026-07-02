@@ -1,5 +1,5 @@
 import type { ResultSetHeader, RowDataPacket } from "mysql2/promise";
-import { getDb, queryOne, queryRows, tableExists } from "@/lib/db";
+import { columnExists, getDb, queryOne, queryRows, tableExists } from "@/lib/db";
 import { likeValue, normalizeDateInput, type SqlValue } from "@/lib/sql";
 import type { FollowupRow, FollowupSummary } from "@/types/followup";
 
@@ -24,6 +24,48 @@ export type FollowupCreateInput = {
   assigned_to?: string | null;
   created_by: string;
 };
+
+type FollowupsSchema = {
+  titleColumn: "title" | "subject";
+  descriptionColumn: "description" | "notes" | null;
+  hasCreatedBy: boolean;
+  hasCreatedAt: boolean;
+  hasUpdatedAt: boolean;
+  hasClosedAt: boolean;
+};
+
+let followupsSchema: Promise<FollowupsSchema> | null = null;
+
+async function getFollowupsSchema() {
+  followupsSchema ??= Promise.all([
+    columnExists("followups", "title"),
+    columnExists("followups", "description"),
+    columnExists("followups", "notes"),
+    columnExists("followups", "created_by"),
+    columnExists("followups", "created_at"),
+    columnExists("followups", "updated_at"),
+    columnExists("followups", "closed_at"),
+  ]).then(
+    ([
+      hasTitle,
+      hasDescription,
+      hasNotes,
+      hasCreatedBy,
+      hasCreatedAt,
+      hasUpdatedAt,
+      hasClosedAt,
+    ]) => ({
+      titleColumn: hasTitle ? "title" : "subject",
+      descriptionColumn: hasDescription ? "description" : hasNotes ? "notes" : null,
+      hasCreatedBy,
+      hasCreatedAt,
+      hasUpdatedAt,
+      hasClosedAt,
+    }),
+  );
+
+  return followupsSchema;
+}
 
 function buildWhere(filters: FollowupFilters) {
   const where: string[] = [];
@@ -84,6 +126,15 @@ export async function listFollowups(filters: FollowupFilters) {
   }
 
   const { whereSql, values } = buildWhere(filters);
+  const schema = await getFollowupsSchema();
+  const titleSelect =
+    schema.titleColumn === "title" ? "f.title" : "f.subject";
+  const descriptionSelect = schema.descriptionColumn
+    ? `f.${schema.descriptionColumn}`
+    : "NULL";
+  const createdBySelect = schema.hasCreatedBy ? "f.created_by" : "NULL";
+  const updatedAtSelect = schema.hasUpdatedAt ? "f.updated_at" : "NULL";
+  const closedAtSelect = schema.hasClosedAt ? "f.closed_at" : "NULL";
 
   const [summary, rows] = await Promise.all([
     queryOne<RowDataPacket & FollowupSummary>(
@@ -104,16 +155,16 @@ export async function listFollowups(filters: FollowupFilters) {
         f.message_id,
         f.mailbox_id,
         f.client_name,
-        f.title,
-        f.description,
+        ${titleSelect} AS title,
+        ${descriptionSelect} AS description,
         f.status,
         f.priority,
         f.due_date,
         f.assigned_to,
-        f.created_by,
+        ${createdBySelect} AS created_by,
         f.created_at,
-        f.updated_at,
-        f.closed_at,
+        ${updatedAtSelect} AS updated_at,
+        ${closedAtSelect} AS closed_at,
         e.subject AS linked_subject
       FROM followups f
       LEFT JOIN email_messages e ON e.id = f.message_id
@@ -164,37 +215,58 @@ export async function createFollowup(input: FollowupCreateInput) {
   }
 
   const mailboxId = input.mailbox_id ?? (await mailboxFromMessage(input.message_id));
+  const schema = await getFollowupsSchema();
+  const columns = [
+    "message_id",
+    "mailbox_id",
+    "client_name",
+    schema.titleColumn,
+    "status",
+    "priority",
+    "due_date",
+    "assigned_to",
+  ];
+  const placeholders = ["?", "?", "?", "?", "?", "?", "?", "?"];
+  const values: SqlValue[] = [
+    input.message_id || null,
+    mailboxId,
+    input.client_name || null,
+    input.title,
+    input.status || "open",
+    input.priority || "medium",
+    input.due_date || null,
+    input.assigned_to || null,
+  ];
+
+  if (schema.descriptionColumn) {
+    columns.push(schema.descriptionColumn);
+    placeholders.push("?");
+    values.push(input.description || null);
+  }
+
+  if (schema.hasCreatedBy) {
+    columns.push("created_by");
+    placeholders.push("?");
+    values.push(input.created_by);
+  }
+
+  if (schema.hasCreatedAt) {
+    columns.push("created_at");
+    placeholders.push("NOW()");
+  }
+
+  if (schema.hasUpdatedAt) {
+    columns.push("updated_at");
+    placeholders.push("NOW()");
+  }
+
   const [result] = await getDb().execute<ResultSetHeader>(
     `
     INSERT INTO followups
-      (
-        message_id,
-        mailbox_id,
-        client_name,
-        title,
-        description,
-        status,
-        priority,
-        due_date,
-        assigned_to,
-        created_by,
-        created_at,
-        updated_at
-      )
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), NOW())
+      (${columns.join(", ")})
+    VALUES (${placeholders.join(", ")})
     `,
-    [
-      input.message_id || null,
-      mailboxId,
-      input.client_name || null,
-      input.title,
-      input.description || null,
-      input.status || "open",
-      input.priority || "medium",
-      input.due_date || null,
-      input.assigned_to || null,
-      input.created_by,
-    ],
+    values,
   );
 
   return { id: result.insertId };
@@ -205,40 +277,47 @@ export async function updateFollowup(id: string, updates: Record<string, unknown
     throw new Error("La table followups n'existe pas dans la base.");
   }
 
-  const allowed = [
-    "client_name",
-    "title",
-    "description",
-    "status",
-    "priority",
-    "due_date",
-    "assigned_to",
-  ];
+  const schema = await getFollowupsSchema();
+  const fieldMap: Record<string, string | null> = {
+    client_name: "client_name",
+    title: schema.titleColumn,
+    description: schema.descriptionColumn,
+    status: "status",
+    priority: "priority",
+    due_date: "due_date",
+    assigned_to: "assigned_to",
+  };
 
   const assignments: string[] = [];
   const values: SqlValue[] = [];
 
-  for (const field of allowed) {
+  for (const field of Object.keys(fieldMap)) {
     if (Object.prototype.hasOwnProperty.call(updates, field)) {
-      assignments.push(`${field} = ?`);
+      const column = fieldMap[field];
+      if (!column) continue;
+      assignments.push(`${column} = ?`);
       values.push((updates[field] as SqlValue) ?? null);
     }
   }
 
-  if (updates.status === "closed") {
+  if (schema.hasClosedAt && updates.status === "closed") {
     assignments.push("closed_at = COALESCE(closed_at, NOW())");
-  } else if (updates.status && updates.status !== "closed") {
+  } else if (schema.hasClosedAt && updates.status && updates.status !== "closed") {
     assignments.push("closed_at = NULL");
   }
 
   if (!assignments.length) return { updated: false };
+
+  if (schema.hasUpdatedAt) {
+    assignments.push("updated_at = NOW()");
+  }
 
   values.push(id);
 
   await getDb().execute(
     `
     UPDATE followups
-    SET ${assignments.join(", ")}, updated_at = NOW()
+    SET ${assignments.join(", ")}
     WHERE id = ?
     LIMIT 1
     `,
