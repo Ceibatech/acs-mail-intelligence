@@ -98,9 +98,21 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           {!isLoginPage ? (
             <footer className="border-t bg-card/50 px-4 py-6 md:px-6 xl:px-8">
               <div className="flex flex-col gap-6">
-                <div className="flex flex-col items-center justify-center gap-8 sm:flex-row">
-                  <Image src="/acs.jfif" alt="ACS Partner Logo" width={120} height={40} className="h-10 w-auto opacity-70 transition-opacity hover:opacity-100" />
-                  <Image src="/ceibac.jfif" alt="Ceibac Analytics Logo" width={120} height={40} className="h-10 w-auto opacity-70 transition-opacity hover:opacity-100" />
+                <div className="flex flex-row flex-wrap items-center justify-center gap-8">
+                  <Image
+                    src="/acs.jpg"
+                    alt="ACS Assureurs Conseils Service"
+                    width={200}
+                    height={200}
+                    className="h-14 w-40 object-cover"
+                  />
+                  <Image
+                    src="/ceibac.jpg"
+                    alt="Ceiba Analytics"
+                    width={200}
+                    height={200}
+                    className="h-14 w-40 object-cover"
+                  />
                 </div>
                 <div className="text-center text-xs text-muted-foreground">
                   <p>
