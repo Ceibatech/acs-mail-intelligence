@@ -148,10 +148,15 @@ Pour envoyer directement depuis le serveur, configurez ces variables dans Vercel
 ```env
 RESEND_API_KEY=...
 SHARE_FROM_EMAIL=archives@votre-domaine.ci
+SHARE_FROM_MODE=default
+SHARE_ALLOWED_FROM_DOMAIN=acs.ci
 SHARE_ADMIN_EMAIL=admin@acs.ci
 ```
 
 - `SHARE_FROM_EMAIL` doit etre une adresse autorisee par votre service d'envoi.
+- `SHARE_FROM_MODE=default` envoie depuis `SHARE_FROM_EMAIL`.
+- `SHARE_FROM_MODE=user` envoie depuis l'email du compte connecte quand son domaine
+  correspond a `SHARE_ALLOWED_FROM_DOMAIN`.
 - `SHARE_ADMIN_EMAIL` est optionnel et recoit une copie des partages.
 - L'utilisateur connecte est automatiquement ajoute en copie.
 

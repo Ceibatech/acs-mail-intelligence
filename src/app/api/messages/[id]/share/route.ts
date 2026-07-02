@@ -58,6 +58,7 @@ export async function POST(
         saved: result.saved,
         deliveryStatus: delivery.status,
         provider: delivery.provider,
+        from: delivery.from,
       },
     });
 

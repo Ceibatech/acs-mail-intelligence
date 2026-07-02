@@ -13,6 +13,7 @@ export type ShareDeliveryResult = {
   provider: "resend" | "mailto";
   to: string[];
   cc: string[];
+  from?: string;
   subject: string;
   mailtoUrl: string;
   reason?: string;
@@ -66,6 +67,50 @@ function buildCc(sharedBy: string, sharedTo: string) {
   const recipients = splitEmails(sharedTo).map((email) => email.toLowerCase());
   return uniqueEmails([sharedBy, ...splitEmails(adminCopy)]).filter(
     (email) => !recipients.includes(email.toLowerCase()),
+  );
+}
+
+function emailDomain(email: string) {
+  return email.split("@")[1]?.trim().toLowerCase() || "";
+}
+
+function allowedFromDomains() {
+  return String(
+    process.env.SHARE_ALLOWED_FROM_DOMAIN ||
+      process.env.SHARE_ALLOWED_FROM_DOMAINS ||
+      "",
+  )
+    .split(/[;,]/)
+    .map((domain) => domain.trim().toLowerCase().replace(/^@/, ""))
+    .filter(Boolean);
+}
+
+function canUseUserAsFrom(email: string) {
+  const mode = String(process.env.SHARE_FROM_MODE || "default").toLowerCase();
+  if (mode !== "user") return false;
+
+  const domain = emailDomain(email);
+  if (!domain) return false;
+
+  const allowed = allowedFromDomains();
+  if (allowed.length) return allowed.includes(domain);
+
+  const fallbackFrom =
+    process.env.SHARE_FROM_EMAIL ||
+    process.env.EMAIL_FROM ||
+    process.env.RESEND_FROM_EMAIL ||
+    "";
+  return domain === emailDomain(fallbackFrom);
+}
+
+function resolveShareFrom(sharedBy: string) {
+  if (canUseUserAsFrom(sharedBy)) return sharedBy;
+
+  return (
+    process.env.SHARE_FROM_EMAIL ||
+    process.env.EMAIL_FROM ||
+    process.env.RESEND_FROM_EMAIL ||
+    ""
   );
 }
 
@@ -126,10 +171,7 @@ export async function deliverMessageShare(
   const { subject, text, html } = buildShareContent(input);
   const mailtoUrl = buildMailtoUrl(to, cc, subject, text);
   const apiKey = process.env.RESEND_API_KEY;
-  const from =
-    process.env.SHARE_FROM_EMAIL ||
-    process.env.EMAIL_FROM ||
-    process.env.RESEND_FROM_EMAIL;
+  const from = resolveShareFrom(input.sharedBy);
 
   if (!apiKey || !from) {
     return {
@@ -137,6 +179,7 @@ export async function deliverMessageShare(
       provider: "mailto",
       to,
       cc,
+      from: input.sharedBy,
       subject,
       mailtoUrl,
       reason: "Aucun service d'envoi serveur n'est configure.",
@@ -171,6 +214,7 @@ export async function deliverMessageShare(
         provider: "mailto",
         to,
         cc,
+        from,
         subject,
         mailtoUrl,
         reason:
@@ -184,6 +228,7 @@ export async function deliverMessageShare(
       provider: "resend",
       to,
       cc,
+      from,
       subject,
       mailtoUrl,
       providerMessageId: payload?.id,
@@ -194,6 +239,7 @@ export async function deliverMessageShare(
       provider: "mailto",
       to,
       cc,
+      from,
       subject,
       mailtoUrl,
       reason:
