@@ -39,6 +39,12 @@ type AnalyticsResponse = {
   categories: Category[];
 };
 
+const TOP_CHART_LIMIT = 6;
+
+function compactLabel(label: string) {
+  return label.length > 22 ? `${label.slice(0, 19)}...` : label;
+}
+
 export function AnalyticsPage() {
   const [data, setData] = useState<AnalyticsResponse | null>(null);
   const [loading, setLoading] = useState(true);
@@ -63,15 +69,38 @@ export function AnalyticsPage() {
     loadData();
   }, []);
 
-  const recentRows = useMemo(
+  const topCategoryRows = useMemo(
     () =>
-      (data?.categories || []).map((category) => ({
-        label: category.label,
-        "7 jours": category.last7Days,
-        "30 jours": category.last30Days,
-      })),
+      (data?.categories || [])
+        .slice()
+        .sort((a, b) => b.total - a.total)
+        .slice(0, TOP_CHART_LIMIT)
+        .map((category) => ({
+          label: compactLabel(category.label),
+          total: category.total,
+        })),
     [data],
   );
+
+  const topRecentRows = useMemo(() => {
+    const categories = data?.categories || [];
+    const hasRecentActivity = categories.some(
+      (category) => category.last7Days > 0 || category.last30Days > 0,
+    );
+
+    return categories
+      .slice()
+      .sort((a, b) => {
+        if (!hasRecentActivity) return b.total - a.total;
+        return b.last30Days + b.last7Days - (a.last30Days + a.last7Days);
+      })
+      .slice(0, TOP_CHART_LIMIT)
+      .map((category) => ({
+        label: compactLabel(category.label),
+        "7 jours": category.last7Days,
+        "30 jours": category.last30Days,
+      }));
+  }, [data]);
 
   if (loading) return <LoadingState label="Chargement de l'analyse courtier..." />;
   if (error) return <ErrorState message={error} />;
@@ -128,16 +157,22 @@ export function AnalyticsPage() {
       <section className="mt-6 grid gap-4 xl:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Emails par catégorie</CardTitle>
+            <CardTitle>Top {TOP_CHART_LIMIT} catégories</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer height="100%" width="100%">
-              <BarChart data={data.categories}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="label" interval={0} tick={{ fontSize: 11 }} />
-                <YAxis tickFormatter={(value) => formatNumber(value)} width={70} />
+              <BarChart data={topCategoryRows} layout="vertical">
+                <CartesianGrid horizontal={false} strokeDasharray="3 3" />
+                <XAxis tickFormatter={(value) => formatNumber(value)} type="number" />
+                <YAxis
+                  dataKey="label"
+                  tick={{ fontSize: 12 }}
+                  tickLine={false}
+                  type="category"
+                  width={132}
+                />
                 <Tooltip />
-                <Bar dataKey="total" fill="var(--color-primary)" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="total" fill="var(--color-primary)" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -145,17 +180,23 @@ export function AnalyticsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Activité récente</CardTitle>
+            <CardTitle>Top {TOP_CHART_LIMIT} activité récente</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer height="100%" width="100%">
-              <BarChart data={recentRows}>
-                <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="label" interval={0} tick={{ fontSize: 11 }} />
-                <YAxis tickFormatter={(value) => formatNumber(value)} width={70} />
+              <BarChart data={topRecentRows} layout="vertical">
+                <CartesianGrid horizontal={false} strokeDasharray="3 3" />
+                <XAxis tickFormatter={(value) => formatNumber(value)} type="number" />
+                <YAxis
+                  dataKey="label"
+                  tick={{ fontSize: 12 }}
+                  tickLine={false}
+                  type="category"
+                  width={132}
+                />
                 <Tooltip />
-                <Bar dataKey="7 jours" fill="var(--color-primary)" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="30 jours" fill="#b7791f" radius={[4, 4, 0, 0]} />
+                <Bar dataKey="7 jours" fill="var(--color-primary)" radius={[0, 4, 4, 0]} />
+                <Bar dataKey="30 jours" fill="#b7791f" radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
