@@ -5,12 +5,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { Badge } from "@/components/ui/badge";
 
 type UserRow = {
   id: number;
   email: string;
+  full_name: string;
   role: string;
+  is_active: boolean;
+  last_login_at: string | null;
   created_at: string;
 };
 
@@ -20,6 +31,7 @@ export function UserManagement() {
   const [users, setUsers] = useState<UserRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [email, setEmail] = useState("");
+  const [fullName, setFullName] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("viewer");
   const [error, setError] = useState<string | null>(null);
@@ -53,12 +65,13 @@ export function UserManagement() {
       const response = await fetch("/api/auth/users", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password, role }),
+        body: JSON.stringify({ email, fullName, password, role }),
       });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || "Impossible de créer l'utilisateur.");
       setSuccess("Compte créé avec succès.");
       setEmail("");
+      setFullName("");
       setPassword("");
       setRole("viewer");
       loadUsers();
@@ -76,7 +89,11 @@ export function UserManagement() {
         <CardContent className="space-y-4">
           {error ? <div className="rounded-md bg-red-50 p-3 text-sm text-red-700">{error}</div> : null}
           {success ? <div className="rounded-md bg-green-50 p-3 text-sm text-green-700">{success}</div> : null}
-          <form className="grid gap-4 md:grid-cols-3" onSubmit={handleCreate}>
+          <form className="grid gap-4 md:grid-cols-4" onSubmit={handleCreate}>
+            <div>
+              <label className="mb-2 block text-sm font-medium text-slate-700">Nom complet</label>
+              <Input value={fullName} onChange={(e) => setFullName(e.target.value)} />
+            </div>
             <div>
               <label className="mb-2 block text-sm font-medium text-slate-700">Email</label>
               <Input value={email} onChange={(e) => setEmail(e.target.value)} type="email" required />
@@ -95,7 +112,7 @@ export function UserManagement() {
                 ))}
               </Select>
             </div>
-            <div className="md:col-span-3">
+            <div className="md:col-span-4">
               <Button type="submit" className="w-full">
                 Créer un compte
               </Button>
@@ -114,17 +131,29 @@ export function UserManagement() {
             <Table>
               <TableHeader>
                 <TableRow>
+                  <TableHead>Nom</TableHead>
                   <TableHead>Email</TableHead>
                   <TableHead>Rôle</TableHead>
-                  <TableHead>Créé le</TableHead>
+                  <TableHead>Statut</TableHead>
+                  <TableHead>Dernier login</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
                 {users.map((user) => (
                   <TableRow key={user.id}>
+                    <TableCell>{user.full_name}</TableCell>
                     <TableCell>{user.email}</TableCell>
                     <TableCell>{user.role}</TableCell>
-                    <TableCell>{new Date(user.created_at).toLocaleString()}</TableCell>
+                    <TableCell>
+                      <Badge variant={user.is_active ? "success" : "warning"}>
+                        {user.is_active ? "Actif" : "Inactif"}
+                      </Badge>
+                    </TableCell>
+                    <TableCell>
+                      {user.last_login_at
+                        ? new Date(user.last_login_at).toLocaleString()
+                        : "-"}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>

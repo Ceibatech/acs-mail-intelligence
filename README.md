@@ -49,11 +49,10 @@ DB_USER=
 DB_PASSWORD=
 
 APP_NAME=ACS Mail Intelligence
-APP_USER_EMAIL=manager@acs.ci
-APP_USER_ROLE=manager
-AUTH_SECRET=change-me-in-production
 ADMIN_EMAIL=admin@acs.ci
 ADMIN_PASSWORD=Admin123!
+ADMIN_FULL_NAME=Administrateur ACS
+ETL_REFRESH_SECRET=change-me-for-etl-refresh
 ```
 
 Le fichier [.env.local](.env.local) est ignoré par Git. Le fichier [.env.example](.env.example) sert de modèle sans secret.
@@ -78,7 +77,64 @@ npm run dev
 npm run build
 npm run start
 npm run lint
+npm run auth:create-admin
 ```
+
+## Authentification
+
+L'application utilise une authentification serveur avec sessions stockees en base MySQL.
+Le navigateur ne recoit jamais le hash du mot de passe ni les identifiants DB.
+
+Tables creees automatiquement par le login ou le script admin :
+
+- `app_users`
+- `app_sessions`
+- `app_login_attempts`
+- `audit_logs`
+
+Variables requises pour le premier compte admin :
+
+```env
+ADMIN_EMAIL=admin@acs.ci
+ADMIN_PASSWORD=StrongPasswordHere
+ADMIN_FULL_NAME=Administrateur ACS
+```
+
+Creation ou mise a jour du premier admin :
+
+```powershell
+$env:ADMIN_EMAIL="admin@acs.ci"
+$env:ADMIN_PASSWORD="StrongPasswordHere"
+$env:ADMIN_FULL_NAME="Administrateur ACS"
+npm run auth:create-admin
+```
+
+Le login se teste ensuite sur :
+
+```text
+http://127.0.0.1:3001/login
+```
+
+Pour proteger une route API :
+
+```ts
+const user = await requireUser(request);
+```
+
+Pour proteger par role :
+
+```ts
+const user = await requireRole(["admin", "manager"], request);
+```
+
+Regles appliquees :
+
+- `admin` accede a tout.
+- `manager` accede a dashboard, emails, analytics, followups et ETL.
+- `analyst` accede a dashboard, emails, analytics et ETL.
+- `viewer` accede seulement a dashboard et analytics.
+- `raw_path` reste reserve au role `admin`.
+- Creation/modification de relances reservees a `admin` et `manager`.
 
 ## Sécurité et confidentialité
 

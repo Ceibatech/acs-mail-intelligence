@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRequestUser } from "@/lib/auth";
+import { isAuthError, requireRole } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { createMessageTag } from "@/lib/queries/emails";
 import { logError } from "@/lib/logger";
@@ -13,7 +13,7 @@ export async function POST(
 ) {
   try {
     const { id } = await context.params;
-    const user = getRequestUser(request);
+    const user = await requireRole(["manager", "analyst"], request);
     const body = await request.json();
 
     if (!body.tag || typeof body.tag !== "string") {
@@ -38,6 +38,10 @@ export async function POST(
 
     return NextResponse.json(result, { status: result.saved ? 201 : 202 });
   } catch (error) {
+    if (isAuthError(error)) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+
     logError("POST /api/messages/[id]/tags", error);
     return NextResponse.json(
       { error: "Impossible d'ajouter le tag." },

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getRequestUser } from "@/lib/auth";
+import { isAuthError, requireRole } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { searchEmails } from "@/lib/queries/emails";
 import { logError } from "@/lib/logger";
@@ -25,8 +25,8 @@ export async function GET(request: NextRequest) {
       pageSize: searchParams.get("pageSize") || "50",
     };
 
+    const user = await requireRole(["manager", "analyst"], request);
     const data = await searchEmails(filters);
-    const user = getRequestUser(request);
 
     await writeAuditLog({
       user,
@@ -42,6 +42,10 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(data);
   } catch (error) {
+    if (isAuthError(error)) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+
     logError("GET /api/emails/search", error);
     return NextResponse.json(
       { error: "Impossible de rechercher les emails." },

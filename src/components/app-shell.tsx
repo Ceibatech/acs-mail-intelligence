@@ -3,7 +3,11 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { AppSidebar, MobileNavigation } from "@/components/app-sidebar";
+import {
+  AppSidebar,
+  MobileNavigation,
+  canAccessPath,
+} from "@/components/app-sidebar";
 import { Badge } from "@/components/ui/badge";
 import type { CurrentUser } from "@/types/auth";
 
@@ -16,7 +20,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const loadUser = async () => {
       try {
-        const response = await fetch("/api/auth/me");
+        const response = await fetch("/api/auth/me", { cache: "no-store" });
         if (!response.ok) {
           setUser(null);
           if (pathname !== "/login") {
@@ -27,7 +31,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
         const payload = await response.json();
         setUser(payload.user);
+
         if (pathname === "/login") {
+          router.replace("/dashboard");
+          return;
+        }
+
+        if (!canAccessPath(payload.user, pathname)) {
           router.replace("/dashboard");
         }
       } catch {
@@ -54,8 +64,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   if (!isLoginPage && loading) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-background px-4">
-        <div className="rounded-3xl border border-slate-200/10 bg-white/95 p-8 shadow-xl">
-          <p className="text-sm font-medium text-slate-700">Chargement de l'authentification...</p>
+        <div className="rounded-md border border-slate-200/80 bg-white/95 p-8 shadow-xl">
+          <p className="text-sm font-medium text-slate-700">
+            Chargement de l'authentification...
+          </p>
         </div>
       </div>
     );
@@ -64,19 +76,23 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen bg-background">
       <div className="flex min-h-screen">
-        {!isLoginPage && <AppSidebar />}
+        {!isLoginPage && <AppSidebar user={user} />}
         <div className="flex min-w-0 flex-1 flex-col">
           {!isLoginPage ? (
             <>
               <header className="sticky top-0 z-20 flex h-16 items-center justify-between border-b bg-card/95 px-4 shadow-sm backdrop-blur md:px-6">
                 <div>
-                  <p className="text-sm font-semibold tracking-normal">ACS Mail Intelligence</p>
-                  <p className="text-xs text-muted-foreground">Pilotage des archives email assurance</p>
+                  <p className="text-sm font-semibold tracking-normal">
+                    ACS Mail Intelligence
+                  </p>
+                  <p className="text-xs text-muted-foreground">
+                    Pilotage des archives email assurance
+                  </p>
                 </div>
                 <div className="flex items-center gap-3">
                   {user ? (
-                    <div className="flex flex-col items-end text-right text-xs">
-                      <span className="font-medium">{user.email}</span>
+                    <div className="hidden flex-col items-end text-right text-xs sm:flex">
+                      <span className="font-medium">{user.fullName || user.email}</span>
                       <span className="text-muted-foreground">{user.role}</span>
                     </div>
                   ) : null}
@@ -91,10 +107,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <Badge variant="outline">Données protégées</Badge>
                 </div>
               </header>
-              <MobileNavigation />
+              <MobileNavigation user={user} />
             </>
           ) : null}
-          <main className={`flex-1 ${isLoginPage ? "px-4 py-10" : "p-4 md:p-6 xl:p-8"}`}>{children}</main>
+          <main className={`flex-1 ${isLoginPage ? "px-4 py-10" : "p-4 md:p-6 xl:p-8"}`}>
+            {children}
+          </main>
           {!isLoginPage ? (
             <footer className="border-t bg-card/50 px-4 py-6 md:px-6 xl:px-8">
               <div className="flex flex-col gap-6">
@@ -119,7 +137,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     Développé par <span className="font-semibold">Ceibac Analytics</span>
                   </p>
                   <p>
-                    Contactez-nous : <a href="mailto:support@ceiba-analytics.com" className="text-primary hover:underline">support@ceiba-analytics.com</a>
+                    Contactez-nous :{" "}
+                    <a
+                      href="mailto:support@ceiba-analytics.com"
+                      className="text-primary hover:underline"
+                    >
+                      support@ceiba-analytics.com
+                    </a>
                   </p>
                 </div>
               </div>

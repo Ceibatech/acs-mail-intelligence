@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { canCreateFollowups, getRequestUser } from "@/lib/auth";
+import { isAuthError, requireRole } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { updateFollowup } from "@/lib/queries/followups";
 import { logError } from "@/lib/logger";
@@ -12,14 +12,7 @@ export async function PATCH(
   context: { params: Promise<{ id: string }> },
 ) {
   try {
-    const user = getRequestUser(request);
-    if (!canCreateFollowups(user.role)) {
-      return NextResponse.json(
-        { error: "Droits insuffisants pour modifier une relance." },
-        { status: 403 },
-      );
-    }
-
+    const user = await requireRole(["manager"], request);
     const { id } = await context.params;
     const body = await request.json();
     const result = await updateFollowup(id, body);
@@ -35,6 +28,10 @@ export async function PATCH(
 
     return NextResponse.json(result);
   } catch (error) {
+    if (isAuthError(error)) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+
     logError("PATCH /api/followups/[id]", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Modification impossible." },

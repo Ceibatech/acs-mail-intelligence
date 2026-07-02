@@ -11,18 +11,72 @@ import {
   TimerReset,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { CurrentUser, UserRole } from "@/types/auth";
 
 const navigation = [
-  { href: "/dashboard", label: "Direction", icon: Gauge },
-  { href: "/emails", label: "Recherche emails", icon: MailSearch },
-  { href: "/followups", label: "Relances", icon: TimerReset },
-  { href: "/analytics", label: "Analyse courtier", icon: BarChart3 },
-  { href: "/etl", label: "Suivi ETL", icon: DatabaseZap },
-  { href: "/settings", label: "Paramètres", icon: Settings },
-];
+  {
+    href: "/dashboard",
+    label: "Direction",
+    icon: Gauge,
+    roles: ["admin", "manager", "analyst", "viewer"],
+  },
+  {
+    href: "/emails",
+    label: "Recherche emails",
+    icon: MailSearch,
+    roles: ["admin", "manager", "analyst"],
+  },
+  {
+    href: "/followups",
+    label: "Relances",
+    icon: TimerReset,
+    roles: ["admin", "manager"],
+  },
+  {
+    href: "/analytics",
+    label: "Analyse courtier",
+    icon: BarChart3,
+    roles: ["admin", "manager", "analyst", "viewer"],
+  },
+  {
+    href: "/etl",
+    label: "Suivi ETL",
+    icon: DatabaseZap,
+    roles: ["admin", "manager", "analyst"],
+  },
+  {
+    href: "/settings",
+    label: "Paramètres",
+    icon: Settings,
+    roles: ["admin"],
+  },
+] satisfies Array<{
+  href: string;
+  label: string;
+  icon: typeof Gauge;
+  roles: UserRole[];
+}>;
 
-export function AppSidebar() {
+function visibleNavigation(user: CurrentUser | null) {
+  if (!user) return [];
+  return navigation.filter((item) => user.role === "admin" || item.roles.includes(user.role));
+}
+
+export function canAccessPath(user: CurrentUser | null, pathname: string) {
+  if (!user) return false;
+  if (pathname === "/login") return true;
+
+  const item = navigation.find(
+    (entry) => pathname === entry.href || pathname.startsWith(`${entry.href}/`),
+  );
+  if (!item) return true;
+
+  return user.role === "admin" || item.roles.includes(user.role);
+}
+
+export function AppSidebar({ user }: { user: CurrentUser | null }) {
   const pathname = usePathname();
+  const items = visibleNavigation(user);
 
   return (
     <aside className="hidden w-68 shrink-0 bg-[var(--color-rail)] text-[var(--color-rail-foreground)] lg:block">
@@ -40,7 +94,7 @@ export function AppSidebar() {
         </div>
       </div>
       <nav className="space-y-1 p-3">
-        {navigation.map((item) => {
+        {items.map((item) => {
           const active =
             pathname === item.href || pathname.startsWith(`${item.href}/`);
           const Icon = item.icon;
@@ -63,19 +117,20 @@ export function AppSidebar() {
       <div className="mx-3 mt-4 rounded-lg border border-white/10 bg-white/[0.06] p-3">
         <p className="text-xs font-medium text-white">Espace confidentiel</p>
         <p className="mt-1 text-xs leading-relaxed text-[var(--color-rail-muted)]">
-          Direction, opérations et supervision ETL.
+          Accès adapté au rôle applicatif.
         </p>
       </div>
     </aside>
   );
 }
 
-export function MobileNavigation() {
+export function MobileNavigation({ user }: { user: CurrentUser | null }) {
   const pathname = usePathname();
+  const items = visibleNavigation(user);
 
   return (
     <nav className="flex gap-2 overflow-x-auto border-b bg-card px-3 py-2 lg:hidden">
-      {navigation.map((item) => {
+      {items.map((item) => {
         const active =
           pathname === item.href || pathname.startsWith(`${item.href}/`);
         const Icon = item.icon;

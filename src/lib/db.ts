@@ -10,6 +10,9 @@ const tableExistenceCache = new Map<string, boolean>();
 const expectedTables = [
   "mailboxes",
   "email_messages",
+  "app_users",
+  "app_sessions",
+  "app_login_attempts",
   "etl_runs",
   "etl_errors",
   "email_tags",

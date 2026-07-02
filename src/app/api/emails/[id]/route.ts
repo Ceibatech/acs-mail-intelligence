@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { canViewRawPath, getRequestUser } from "@/lib/auth";
+import { canViewRawPath, isAuthError, requireRole } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { getEmailDetail } from "@/lib/queries/emails";
 import { logError } from "@/lib/logger";
@@ -13,7 +13,7 @@ export async function GET(
 ) {
   try {
     const { id } = await context.params;
-    const user = getRequestUser(request);
+    const user = await requireRole(["manager", "analyst"], request);
     const email = await getEmailDetail(id, canViewRawPath(user.role));
 
     if (!email) {
@@ -30,6 +30,10 @@ export async function GET(
 
     return NextResponse.json(email);
   } catch (error) {
+    if (isAuthError(error)) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+
     logError("GET /api/emails/[id]", error);
     return NextResponse.json(
       { error: "Impossible de charger le message." },

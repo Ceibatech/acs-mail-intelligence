@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { canCreateFollowups, getRequestUser } from "@/lib/auth";
+import { isAuthError, requireRole } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { createFollowup, listFollowups } from "@/lib/queries/followups";
 import { logError } from "@/lib/logger";
@@ -9,6 +9,8 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   try {
+    await requireRole(["manager"], request);
+
     const { searchParams } = new URL(request.url);
     const data = await listFollowups({
       status: searchParams.get("status") || "",
@@ -21,6 +23,10 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(data);
   } catch (error) {
+    if (isAuthError(error)) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+
     logError("GET /api/followups", error);
     return NextResponse.json(
       { error: "Impossible de charger les relances." },
@@ -31,15 +37,9 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const user = getRequestUser(request);
-    if (!canCreateFollowups(user.role)) {
-      return NextResponse.json(
-        { error: "Droits insuffisants pour créer une relance." },
-        { status: 403 },
-      );
-    }
-
+    const user = await requireRole(["manager"], request);
     const body = await request.json();
+
     if (!body.title || typeof body.title !== "string") {
       return NextResponse.json(
         { error: "Le titre de la relance est obligatoire." },
@@ -71,9 +71,13 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(result, { status: 201 });
   } catch (error) {
-    console.error(error);
+    if (isAuthError(error)) {
+      return NextResponse.json({ error: error.message }, { status: error.status });
+    }
+
+    logError("POST /api/followups", error);
     return NextResponse.json(
-      { error: error instanceof Error ? error.message : "Création impossible." },
+      { error: error instanceof Error ? error.message : "Creation impossible." },
       { status: 500 },
     );
   }
