@@ -1,7 +1,21 @@
 import { ShieldCheck } from "lucide-react";
 import { LoginForm } from "@/components/auth/login-form";
 
-export default function LoginPage() {
+type LoginPageProps = {
+  searchParams?: Promise<{
+    next?: string;
+  }>;
+};
+
+function getSafeNextPath(next?: string) {
+  if (!next?.startsWith("/") || next.startsWith("//")) return "/dashboard";
+  return next;
+}
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const params = await searchParams;
+  const nextPath = getSafeNextPath(params?.next);
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-slate-950 px-4 py-10 text-white">
       <div className="w-full max-w-md">
@@ -20,7 +34,7 @@ export default function LoginPage() {
           </p>
         </div>
 
-        <LoginForm />
+        <LoginForm nextPath={nextPath} />
       </div>
     </div>
   );
