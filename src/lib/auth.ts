@@ -57,6 +57,19 @@ function verifyToken(token: string): AuthTokenPayload | null {
   }
 }
 
+function readTokenPayload(request: Request | NextRequest): AuthTokenPayload | null {
+  const authHeader = request.headers.get("authorization") || "";
+  const bearerToken = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : undefined;
+  const nextRequest = request as NextRequest & {
+    cookies?: {
+      get?: (name: string) => { value?: string } | undefined;
+    };
+  };
+  const cookieToken = nextRequest.cookies?.get?.("acs_token")?.value;
+  const token = bearerToken || cookieToken;
+  return token ? verifyToken(token) : null;
+}
+
 export function createAuthToken(payload: { email: string; role: UserRole }) {
   const header = base64url(JSON.stringify({ alg: "HS256", typ: "JWT" }));
   const now = Math.floor(Date.now() / 1000);
@@ -70,14 +83,8 @@ export function createAuthToken(payload: { email: string; role: UserRole }) {
   return `${header}.${payloadPart}.${signature}`;
 }
 
-export function getRequestUser(request: NextRequest): CurrentUser {
-  const authHeader = request.headers.get("authorization") || "";
-  const bearerToken = authHeader.startsWith("Bearer ")
-    ? authHeader.slice(7)
-    : undefined;
-  const cookieToken = request.cookies.get("acs_token")?.value;
-  const token = bearerToken || cookieToken;
-  const payload = token ? verifyToken(token) : null;
+export function getRequestUser(request: Request | NextRequest): CurrentUser {
+  const payload = readTokenPayload(request);
 
   if (payload) {
     return { email: payload.email, role: payload.role };
@@ -89,20 +96,19 @@ export function getRequestUser(request: NextRequest): CurrentUser {
   };
 }
 
-export function getAuthenticatedRequestUser(request: NextRequest): CurrentUser {
-  const authHeader = request.headers.get("authorization") || "";
-  const bearerToken = authHeader.startsWith("Bearer ")
-    ? authHeader.slice(7)
-    : undefined;
-  const cookieToken = request.cookies.get("acs_token")?.value;
-  const token = bearerToken || cookieToken;
-  const payload = token ? verifyToken(token) : null;
+export function getAuthenticatedRequestUser(request: Request | NextRequest): CurrentUser {
+  const payload = readTokenPayload(request);
 
   if (!payload) {
     throw new Error("Unauthorized");
   }
 
   return { email: payload.email, role: payload.role };
+}
+
+export function getOptionalRequestUser(request: Request | NextRequest): CurrentUser | null {
+  const payload = readTokenPayload(request);
+  return payload ? { email: payload.email, role: payload.role } : null;
 }
 
 export function getConfiguredUser(): CurrentUser {
