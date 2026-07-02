@@ -6,21 +6,51 @@ function numberValue(value: unknown) {
 }
 
 export async function getEtlStatus() {
-  const hasRuns = await tableExists("etl_runs");
-  const hasErrors = await tableExists("etl_errors");
-
-  const [latestImported, importedToday] = await Promise.all([
-    queryOne<RowDataPacket & { latestImportedAt: string | null }>(
-      "SELECT MAX(imported_at) AS latestImportedAt FROM email_messages",
-    ),
-    queryOne<RowDataPacket & { total: number }>(
-      `
-      SELECT COUNT(*) AS total
-      FROM email_messages
-      WHERE DATE(imported_at) = CURDATE()
-      `,
-    ),
+  const [hasRuns, hasErrors, hasRefreshRuns, hasDashboardKpis] = await Promise.all([
+    tableExists("etl_runs"),
+    tableExists("etl_errors"),
+    tableExists("dashboard_refresh_runs"),
+    tableExists("dashboard_kpis"),
   ]);
+
+  const kpis = hasDashboardKpis
+    ? await queryOne<
+        RowDataPacket & {
+          imported_today: number;
+          latest_imported_at: string | null;
+          latest_etl_status: string | null;
+          etl_errors_count: number;
+        }
+      >(
+        `
+        SELECT imported_today, latest_imported_at, latest_etl_status, etl_errors_count
+        FROM dashboard_kpis
+        WHERE id = 1
+        `,
+      )
+    : null;
+
+  const latestRefreshRun = hasRefreshRuns
+    ? await queryOne<RowDataPacket>(
+        `
+        SELECT id, status, started_at, finished_at, note, error_message
+        FROM dashboard_refresh_runs
+        ORDER BY id DESC
+        LIMIT 1
+        `,
+      )
+    : null;
+
+  const refreshHistory = hasRefreshRuns
+    ? await queryRows<RowDataPacket>(
+        `
+        SELECT id, status, started_at, finished_at, note, error_message
+        FROM dashboard_refresh_runs
+        ORDER BY id DESC
+        LIMIT 25
+        `,
+      )
+    : [];
 
   const latestRun = hasRuns
     ? await queryOne<RowDataPacket>(
@@ -115,13 +145,19 @@ export async function getEtlStatus() {
 
   return {
     tables: {
+      dashboard_kpis: hasDashboardKpis,
+      dashboard_refresh_runs: hasRefreshRuns,
       etl_runs: hasRuns,
       etl_errors: hasErrors,
     },
     latestRun,
     latestIncrementalRun,
-    lastImportedAt: latestImported?.latestImportedAt ?? null,
-    importedToday: numberValue(importedToday?.total),
+    latestRefreshRun,
+    refreshHistory,
+    lastImportedAt: kpis?.latest_imported_at ?? null,
+    importedToday: numberValue(kpis?.imported_today),
+    latestEtlStatus: kpis?.latest_etl_status ?? latestRefreshRun?.status ?? null,
+    etlErrorsCount: numberValue(kpis?.etl_errors_count),
     errorsByType: errorsByType.map((row) => ({
       error_type: row.error_type,
       total: numberValue(row.total),

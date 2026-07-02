@@ -22,7 +22,9 @@ export async function upsertAggregate(name: string, payload: unknown) {
   );
 }
 
-export async function getAggregate(name: string): Promise<{ payload: any; updated_at: string } | null> {
+export async function getAggregate(
+  name: string,
+): Promise<{ payload: unknown; updated_at: string } | null> {
   await ensureAggregatesTable();
   const [rows] = await getDb().query<RowDataPacket[]>(
     `SELECT payload, updated_at FROM analytics_aggregates WHERE name = ? LIMIT 1`,

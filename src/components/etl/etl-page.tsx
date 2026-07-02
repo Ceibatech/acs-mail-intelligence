@@ -41,12 +41,30 @@ type EtlRun = {
   duration_seconds: number | null;
 };
 
+type RefreshRun = {
+  id: number;
+  status: string | null;
+  started_at: string | null;
+  finished_at: string | null;
+  note: string | null;
+  error_message: string | null;
+};
+
 type EtlStatus = {
-  tables: { etl_runs: boolean; etl_errors: boolean };
+  tables: {
+    dashboard_kpis: boolean;
+    dashboard_refresh_runs: boolean;
+    etl_runs: boolean;
+    etl_errors: boolean;
+  };
   latestRun: EtlRun | null;
   latestIncrementalRun: EtlRun | null;
+  latestRefreshRun: RefreshRun | null;
+  refreshHistory: RefreshRun[];
   lastImportedAt: string | null;
   importedToday: number;
+  latestEtlStatus: string | null;
+  etlErrorsCount: number;
   errorsByType: Array<{ error_type: string; total: number }>;
   latestErrors: Array<Record<string, string | number | null>>;
   runHistory: EtlRun[];
@@ -89,28 +107,28 @@ export function EtlPage() {
             Actualiser
           </Button>
         }
-        description="Tableau de bord opérationnel pour l'administration : supervision des runs ETL, import et erreurs."
+        description="Monitoring des imports, des refresh dashboard et des erreurs techniques."
         title="Suivi ETL"
       />
 
-      {!data.tables.etl_runs || !data.tables.etl_errors ? (
+      {!data.tables.dashboard_kpis || !data.tables.dashboard_refresh_runs ? (
         <div className="mb-4">
           <EmptyState
-            description="Certaines tables ETL optionnelles sont absentes. Les cartes basées sur email_messages restent disponibles."
-            title="Tables ETL partielles"
+            description="Les tables cache dashboard_kpis ou dashboard_refresh_runs ne sont pas encore disponibles."
+            title="Cache dashboard incomplet"
           />
         </div>
       ) : null}
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
-          description="Dernier run connu"
+          description="Statut issu du cache dashboard"
           icon={DatabaseZap}
           title="Statut ETL"
-          value={<StatusBadge value={data.latestRun?.status || null} />}
+          value={<StatusBadge value={data.latestEtlStatus || data.latestRun?.status} />}
         />
         <StatCard
-          description="Messages importés aujourd'hui"
+          description="Valeur dashboard_kpis"
           icon={DatabaseZap}
           title="Imports du jour"
           value={formatNumber(data.importedToday)}
@@ -122,19 +140,18 @@ export function EtlPage() {
           value={relativeDate(data.lastImportedAt)}
         />
         <StatCard
-          description="Types d'erreurs distincts"
+          description="Compteur dashboard_kpis"
           icon={AlertTriangle}
           title="Erreurs ETL"
-          tone={data.errorsByType.length ? "warning" : "success"}
-          value={formatNumber(
-            data.errorsByType.reduce((total, item) => total + Number(item.total || 0), 0),
-          )}
+          tone={data.etlErrorsCount > 0 ? "warning" : "success"}
+          value={formatNumber(data.etlErrorsCount)}
         />
       </section>
 
-      <section className="mt-6 grid gap-4 xl:grid-cols-2">
-        <RunCard run={data.latestRun} title="Dernier run" />
-        <RunCard run={data.latestIncrementalRun} title="Dernier run incrémental" />
+      <section className="mt-6 grid gap-4 xl:grid-cols-3">
+        <RefreshCard run={data.latestRefreshRun} title="Dernier refresh dashboard" />
+        <RunCard run={data.latestRun} title="Dernier run ETL" />
+        <RunCard run={data.latestIncrementalRun} title="Dernier incrémental" />
       </section>
 
       <section className="mt-6 grid gap-4 xl:grid-cols-[420px_minmax(0,1fr)]">
@@ -161,52 +178,88 @@ export function EtlPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Historique des runs</CardTitle>
+            <CardTitle>Historique refresh dashboard</CardTitle>
           </CardHeader>
           <CardContent>
-            {data.runHistory.length ? (
+            {data.refreshHistory.length ? (
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Type</TableHead>
                     <TableHead>Statut</TableHead>
                     <TableHead>Début</TableHead>
-                    <TableHead>Durée</TableHead>
-                    <TableHead className="text-right">Traités</TableHead>
-                    <TableHead className="text-right">Insérés</TableHead>
-                    <TableHead className="text-right">Échecs</TableHead>
+                    <TableHead>Fin</TableHead>
+                    <TableHead>Note</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {data.runHistory.map((run) => (
+                  {data.refreshHistory.map((run) => (
                     <TableRow key={run.id}>
-                      <TableCell>{run.run_type || "-"}</TableCell>
                       <TableCell>
                         <StatusBadge value={run.status} />
                       </TableCell>
                       <TableCell>{formatDateTime(run.started_at)}</TableCell>
-                      <TableCell>
-                        {formatDurationMs(Number(run.duration_seconds || 0) * 1000)}
-                      </TableCell>
-                      <TableCell className="metric-number text-right">
-                        {formatNumber(run.processed_count)}
-                      </TableCell>
-                      <TableCell className="metric-number text-right">
-                        {formatNumber(run.inserted_count)}
-                      </TableCell>
-                      <TableCell className="metric-number text-right">
-                        {formatNumber(run.failed_count)}
+                      <TableCell>{formatDateTime(run.finished_at)}</TableCell>
+                      <TableCell className="max-w-96 truncate">
+                        {run.error_message || run.note || "-"}
                       </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             ) : (
-              <EmptyState title="Aucun run ETL disponible" />
+              <EmptyState title="Aucun refresh dashboard disponible" />
             )}
           </CardContent>
         </Card>
       </section>
+
+      <Card className="mt-6">
+        <CardHeader>
+          <CardTitle>Historique des runs ETL</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {data.runHistory.length ? (
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Type</TableHead>
+                  <TableHead>Statut</TableHead>
+                  <TableHead>Début</TableHead>
+                  <TableHead>Durée</TableHead>
+                  <TableHead className="text-right">Traités</TableHead>
+                  <TableHead className="text-right">Insérés</TableHead>
+                  <TableHead className="text-right">Échecs</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {data.runHistory.map((run) => (
+                  <TableRow key={run.id}>
+                    <TableCell>{run.run_type || "-"}</TableCell>
+                    <TableCell>
+                      <StatusBadge value={run.status} />
+                    </TableCell>
+                    <TableCell>{formatDateTime(run.started_at)}</TableCell>
+                    <TableCell>
+                      {formatDurationMs(Number(run.duration_seconds || 0) * 1000)}
+                    </TableCell>
+                    <TableCell className="metric-number text-right">
+                      {formatNumber(run.processed_count)}
+                    </TableCell>
+                    <TableCell className="metric-number text-right">
+                      {formatNumber(run.inserted_count)}
+                    </TableCell>
+                    <TableCell className="metric-number text-right">
+                      {formatNumber(run.failed_count)}
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          ) : (
+            <EmptyState title="Aucun run ETL disponible" />
+          )}
+        </CardContent>
+      </Card>
 
       <Card className="mt-6">
         <CardHeader>
@@ -247,6 +300,28 @@ export function EtlPage() {
   );
 }
 
+function RefreshCard({ title, run }: { title: string; run: RefreshRun | null }) {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{title}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        {run ? (
+          <dl className="grid gap-4">
+            <Meta label="Statut" value={<StatusBadge value={run.status} />} />
+            <Meta label="Début" value={formatDateTime(run.started_at)} />
+            <Meta label="Fin" value={formatDateTime(run.finished_at)} />
+            <Meta label="Note" value={run.error_message || run.note || "-"} />
+          </dl>
+        ) : (
+          <EmptyState title="Aucune donnée" />
+        )}
+      </CardContent>
+    </Card>
+  );
+}
+
 function RunCard({ title, run }: { title: string; run: EtlRun | null }) {
   return (
     <Card>
@@ -255,17 +330,15 @@ function RunCard({ title, run }: { title: string; run: EtlRun | null }) {
       </CardHeader>
       <CardContent>
         {run ? (
-          <dl className="grid gap-4 md:grid-cols-2">
+          <dl className="grid gap-4">
             <Meta label="Type" value={run.run_type} />
             <Meta label="Statut" value={<StatusBadge value={run.status} />} />
             <Meta label="Début" value={formatDateTime(run.started_at)} />
-            <Meta label="Fin" value={formatDateTime(run.finished_at)} />
             <Meta
               label="Durée"
               value={formatDurationMs(Number(run.duration_seconds || 0) * 1000)}
             />
             <Meta label="Traités" value={formatNumber(run.processed_count)} />
-            <Meta label="Insérés" value={formatNumber(run.inserted_count)} />
             <Meta label="Échecs" value={formatNumber(run.failed_count)} />
           </dl>
         ) : (

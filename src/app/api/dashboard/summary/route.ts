@@ -10,7 +10,7 @@ export async function GET() {
     const data = await getDashboardSummary();
     return NextResponse.json(data);
   } catch (error) {
-    console.error(error);
+    logError("GET /api/dashboard/summary", error);
     return NextResponse.json(
       { error: "Impossible de charger le tableau de bord." },
       { status: 500 },
