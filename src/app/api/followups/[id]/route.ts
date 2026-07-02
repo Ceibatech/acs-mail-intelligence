@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { canCreateFollowups, getRequestUser } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { updateFollowup } from "@/lib/queries/followups";
+import { logError } from "@/lib/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -34,7 +35,7 @@ export async function PATCH(
 
     return NextResponse.json(result);
   } catch (error) {
-    console.error(error);
+    logError("PATCH /api/followups/[id]", error);
     return NextResponse.json(
       { error: error instanceof Error ? error.message : "Modification impossible." },
       { status: 500 },

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { canViewRawPath, getRequestUser } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { getEmailDetail } from "@/lib/queries/emails";
+import { logError } from "@/lib/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -29,7 +30,7 @@ export async function GET(
 
     return NextResponse.json(email);
   } catch (error) {
-    console.error(error);
+    logError("GET /api/emails/[id]", error);
     return NextResponse.json(
       { error: "Impossible de charger le message." },
       { status: 500 },

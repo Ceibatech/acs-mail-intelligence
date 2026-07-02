@@ -4216,3 +4216,1227 @@ Import trace:
     at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
     at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
     at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts 
+    at handleErrors (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+    at processMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2835:28)
+    at <unknown> (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2680:13)
+    at WebSocket.handleMessage (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2325:17) (file://C:/Users/idris/OneDrive/Documents/consultance winro/acs-mail-intelligence/.next/dev/static/chunks/node_modules_next_dist_client_16lnmlo._.js:2774:21)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)
+[browser] Uncaught Error: ./src/lib/queries/analytics.ts:279:1
+Expected '}', got '<eof>'
+  277 |   analyticsCacheTimestamp = Date.now();
+  278 |   return result;
+> 279 |
+      | ^
+
+Parsing ecmascript source code failed
+
+Import trace:
+  App Route:
+    ./src/lib/queries/analytics.ts
+    ./src/app/api/analytics/insurance/route.ts
+
+
+    at <unknown> (Error: ./src/lib/queries/analytics.ts:279:1)
+    at <unknown> (Error: (./src/lib/queries/analytics.ts:279:1)

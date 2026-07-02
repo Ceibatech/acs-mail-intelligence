@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { canCreateFollowups, getRequestUser } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { createFollowup, listFollowups } from "@/lib/queries/followups";
+import { logError } from "@/lib/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -20,7 +21,7 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json(data);
   } catch (error) {
-    console.error(error);
+    logError("GET /api/followups", error);
     return NextResponse.json(
       { error: "Impossible de charger les relances." },
       { status: 500 },

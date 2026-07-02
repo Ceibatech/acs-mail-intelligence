@@ -1,4 +1,5 @@
 import { getDb, tableExists } from "@/lib/db";
+import { logError } from "@/lib/logger";
 import type { CurrentUser } from "@/types/auth";
 
 type AuditInput = {
@@ -30,6 +31,6 @@ export async function writeAuditLog(input: AuditInput) {
       ],
     );
   } catch (error) {
-    console.error("Failed to write audit log", error);
+    logError("writeAuditLog", error);
   }
 }

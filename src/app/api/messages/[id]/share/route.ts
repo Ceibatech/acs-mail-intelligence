@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getRequestUser } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { shareMessageMetadata } from "@/lib/queries/emails";
+import { logError } from "@/lib/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -42,7 +43,7 @@ export async function POST(
 
     return NextResponse.json(result, { status: result.saved ? 201 : 202 });
   } catch (error) {
-    console.error(error);
+    logError("POST /api/messages/[id]/share", error);
     return NextResponse.json(
       { error: "Impossible de préparer le partage." },
       { status: 500 },
