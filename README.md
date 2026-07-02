@@ -137,6 +137,24 @@ Regles appliquees :
 - `raw_path` reste reserve au role `admin`.
 - Creation/modification de relances reservees a `admin` et `manager`.
 
+## Partage email
+
+L'action `Partager` fonctionne sans service externe : elle ouvre un brouillon
+email avec le lien interne vers le message archive, les metadonnees utiles, un
+extrait du message et l'utilisateur connecte en copie.
+
+Pour envoyer directement depuis le serveur, configurez ces variables dans Vercel :
+
+```env
+RESEND_API_KEY=...
+SHARE_FROM_EMAIL=archives@votre-domaine.ci
+SHARE_ADMIN_EMAIL=admin@acs.ci
+```
+
+- `SHARE_FROM_EMAIL` doit etre une adresse autorisee par votre service d'envoi.
+- `SHARE_ADMIN_EMAIL` est optionnel et recoit une copie des partages.
+- L'utilisateur connecte est automatiquement ajoute en copie.
+
 ## Sécurité et confidentialité
 
 - Les identifiants MySQL sont conservés côté serveur.

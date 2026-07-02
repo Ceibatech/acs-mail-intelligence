@@ -38,6 +38,17 @@ type FilterState = {
   pageSize: string;
 };
 
+type ShareResponse = {
+  saved?: boolean;
+  reason?: string;
+  message?: string;
+  delivery?: {
+    status?: "sent" | "manual";
+    mailtoUrl?: string;
+    reason?: string;
+  };
+};
+
 const defaultFilters: FilterState = {
   keyword: "",
   mailbox: "",
@@ -231,11 +242,24 @@ export function EmailSearchPage() {
     }
 
     setSelectedShare(null);
-    setNote(
-      payload.saved
-        ? "Demande de partage enregistrée."
-        : payload.reason || "Partage préparé.",
-    );
+    handleShareResult(payload);
+  }
+
+  function handleShareResult(payload: ShareResponse) {
+    if (payload.delivery?.status === "sent") {
+      setNote("Partage envoyé. L'utilisateur est en copie.");
+      return;
+    }
+
+    if (payload.delivery?.mailtoUrl) {
+      window.location.href = payload.delivery.mailtoUrl;
+      setNote(
+        "Brouillon email ouvert. Le message archivé et la copie interne sont prêts.",
+      );
+      return;
+    }
+
+    setNote(payload.reason || payload.message || "Partage préparé.");
   }
 
   return (
@@ -556,13 +580,13 @@ export function EmailSearchPage() {
               Annuler
             </Button>
             <Button disabled={submitting} form="email-share-form" type="submit">
-              Enregistrer le partage
+              Partager
             </Button>
           </div>
         }
         onClose={() => setSelectedShare(null)}
         open={Boolean(selectedShare)}
-        title="Partager les métadonnées"
+        title="Partager le message"
       >
         <form className="grid gap-4" id="email-share-form" onSubmit={submitShare}>
           <Field label="Destinataire">

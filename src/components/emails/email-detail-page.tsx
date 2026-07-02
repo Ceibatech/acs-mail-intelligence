@@ -35,6 +35,17 @@ const classifications = [
   "contrat",
 ];
 
+type ShareResponse = {
+  saved?: boolean;
+  reason?: string;
+  message?: string;
+  delivery?: {
+    status?: "sent" | "manual";
+    mailtoUrl?: string;
+    reason?: string;
+  };
+};
+
 export function EmailDetailPage({ id }: { id: string }) {
   const [email, setEmail] = useState<EmailDetail | null>(null);
   const [loading, setLoading] = useState(true);
@@ -165,11 +176,24 @@ export function EmailDetailPage({ id }: { id: string }) {
     }
 
     setShareOpen(false);
-    setNote(
-      payload.saved
-        ? "Demande de partage enregistrée."
-        : payload.reason || "Partage préparé.",
-    );
+    handleShareResult(payload);
+  }
+
+  function handleShareResult(payload: ShareResponse) {
+    if (payload.delivery?.status === "sent") {
+      setNote("Partage envoyé. L'utilisateur est en copie.");
+      return;
+    }
+
+    if (payload.delivery?.mailtoUrl) {
+      window.location.href = payload.delivery.mailtoUrl;
+      setNote(
+        "Brouillon email ouvert. Le message archivé et la copie interne sont prêts.",
+      );
+      return;
+    }
+
+    setNote(payload.reason || payload.message || "Partage préparé.");
   }
 
   async function addTag(tag: string) {
@@ -445,13 +469,13 @@ export function EmailDetailPage({ id }: { id: string }) {
               Annuler
             </Button>
             <Button disabled={submitting} form="detail-share-form" type="submit">
-              Enregistrer le partage
+              Partager
             </Button>
           </div>
         }
         onClose={() => setShareOpen(false)}
         open={shareOpen}
-        title="Partager les métadonnées"
+        title="Partager le message"
       >
         <form className="grid gap-4" id="detail-share-form" onSubmit={submitShare}>
           <Field label="Destinataire">

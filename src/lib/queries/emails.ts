@@ -307,12 +307,14 @@ export async function shareMessageMetadata({
   sharedBy,
   sharedTo,
   shareChannel,
+  status,
   note,
 }: {
   messageId: string;
   sharedBy: string;
   sharedTo: string;
   shareChannel: string;
+  status?: string;
   note?: string | null;
 }) {
   if (!(await tableExists("message_share_logs"))) {
@@ -323,9 +325,9 @@ export async function shareMessageMetadata({
     `
     INSERT INTO message_share_logs
       (message_id, shared_by, shared_to, share_channel, status, note, created_at)
-    VALUES (?, ?, ?, ?, 'prepared', ?, NOW())
+    VALUES (?, ?, ?, ?, ?, ?, NOW())
     `,
-    [messageId, sharedBy, sharedTo, shareChannel, note || null],
+    [messageId, sharedBy, sharedTo, shareChannel, status || "prepared", note || null],
   );
 
   return { saved: true, result };
