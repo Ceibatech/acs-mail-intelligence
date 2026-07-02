@@ -104,7 +104,7 @@ export function DashboardPage() {
           <div className="p-6 sm:p-8">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <span className="inline-flex rounded-full bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.24em] text-slate-200">
-                Direction Assurance
+                PILOTAGE COURTAGE
               </span>
               <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200">
                 Données prêtes. Décisions rapides.
