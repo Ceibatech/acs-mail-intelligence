@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { databaseHealth, formatDbError } from "@/lib/db";
 import { getRequestUser } from "@/lib/auth";
+import { logError } from "@/lib/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,7 +15,7 @@ export async function GET(request: NextRequest) {
       currentUser: getRequestUser(request),
     });
   } catch (error) {
-    console.error(error);
+    logError("GET /api/settings/database", error);
     return NextResponse.json(
       {
         ok: false,

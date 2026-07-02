@@ -2,6 +2,7 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { getAuthenticatedRequestUser } from "@/lib/auth";
 import { createAdminUser, getUsersForAdmin } from "@/lib/users-admin";
+import { logError } from "@/lib/logger";
 import type { UserRole } from "@/types/auth";
 
 export const runtime = "nodejs";
@@ -40,7 +41,7 @@ export async function POST(request: NextRequest) {
     const created = await createAdminUser(email, password, role);
     return NextResponse.json({ user: created });
   } catch (error) {
-    console.error(error);
+    logError("POST /api/auth/users", error);
     return NextResponse.json({ error: "Impossible de créer le compte." }, { status: 500 });
   }
 }

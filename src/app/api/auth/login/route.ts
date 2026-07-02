@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { getUserByEmail } from "@/lib/users";
 import { createAuthToken } from "@/lib/auth";
 import { ensureAdminUser } from "@/lib/users-admin";
+import { logError } from "@/lib/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -42,7 +43,7 @@ export async function POST(request: Request) {
 
     return response;
   } catch (error) {
-    console.error(error);
+    logError("POST /api/auth/login", error);
     return NextResponse.json({ error: "Impossible de se connecter." }, { status: 500 });
   }
 }

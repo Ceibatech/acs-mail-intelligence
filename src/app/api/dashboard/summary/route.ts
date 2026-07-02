@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { getDashboardSummary } from "@/lib/queries/dashboard";
+import { logError } from "@/lib/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getInsuranceAnalytics } from "@/lib/queries/analytics";
 import { getDashboardSummary } from "@/lib/queries/dashboard";
 import { upsertAggregate } from "@/lib/queries/aggregates";
+import { logError } from "@/lib/logger";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -28,7 +29,7 @@ export async function POST(request: Request) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error(err);
+    logError("POST /api/etl/refresh-aggregates", err);
     return NextResponse.json({ error: "Refresh failed" }, { status: 500 });
   }
 }
