@@ -115,7 +115,7 @@ export function DashboardPage() {
               Vision consolidée du courtage
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
-              Les données sont prêtes : suivez les sinistres, devis, réclamations et enjeux de conformité sans entrer dans la technique.
+              Transformez l'historique email en indicateurs de pilotage pour suivre les sinistres, les demandes clients, les relances, les réclamations et la performance opérationnelle.
             </p>
 
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
