@@ -40,9 +40,9 @@ const navigation = [
   },
   {
     href: "/etl",
-    label: "Suivi ETL",
+    label: "Supervision",
     icon: DatabaseZap,
-    roles: ["admin", "manager", "analyst"],
+    roles: ["admin"],
   },
   {
     href: "/settings",

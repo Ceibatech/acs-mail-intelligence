@@ -10,6 +10,7 @@ import {
 } from "@/lib/auth";
 import { writeAuditLog } from "@/lib/audit";
 import { logError } from "@/lib/logger";
+import { ensureAdminUser } from "@/lib/users-admin";
 import { getUserByEmail, updateLastLogin } from "@/lib/users";
 import type { UserRole } from "@/types/auth";
 
@@ -51,6 +52,10 @@ export async function POST(request: Request) {
         { error: "Email et mot de passe requis." },
         { status: 400 },
       );
+    }
+
+    if (process.env.ADMIN_EMAIL?.trim().toLowerCase() === email) {
+      await ensureAdminUser();
     }
 
     const user = await getUserByEmail(email);

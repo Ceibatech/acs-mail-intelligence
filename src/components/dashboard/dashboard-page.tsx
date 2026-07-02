@@ -95,8 +95,8 @@ export function DashboardPage() {
             Actualiser
           </Button>
         }
-        description="Vue stratégique courtage assurance : volumes email, activité des boîtes et qualité des données."
-        title="Tableau de bord Direction"
+        description="Vue exécutive des flux assurance : volumes, priorités métier, activité des équipes et fiabilité des données."
+        title="Pilotage Direction"
       />
 
       <section className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_320px]">
@@ -107,32 +107,32 @@ export function DashboardPage() {
                 Direction Assurance
               </span>
               <div className="rounded-2xl border border-white/10 bg-white/5 px-4 py-2 text-sm text-slate-200">
-                Données prêtes. Action rapide.
+                Données prêtes. Décisions rapides.
               </div>
             </div>
 
             <h2 className="mt-5 text-3xl font-semibold tracking-tight sm:text-4xl">
-              Pilotage email courtage haut niveau
+              Vision consolidée du courtage
             </h2>
             <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-300 sm:text-base">
-              Les tables sont déjà remplies : exploite directement le volume email pour suivre sinistres, devis, réclamations et conformité.
+              Les données sont prêtes : suivez les sinistres, devis, réclamations et enjeux de conformité sans entrer dans la technique.
             </p>
 
             <div className="mt-8 grid gap-3 sm:grid-cols-3">
               <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
-                <p className="text-xs uppercase tracking-[0.3em] text-slate-300">Vision</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-slate-300">Portefeuille</p>
                 <p className="mt-3 text-2xl font-semibold text-white">{formatNumber(data.totalEmails)}</p>
-                <p className="mt-1 text-sm text-slate-300">emails indexés</p>
+                <p className="mt-1 text-sm text-slate-300">messages exploitables</p>
               </div>
               <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
-                <p className="text-xs uppercase tracking-[0.3em] text-slate-300">Équipe</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-slate-300">Réseau</p>
                 <p className="mt-3 text-2xl font-semibold text-white">{formatNumber(data.totalMailboxes)}</p>
                 <p className="mt-1 text-sm text-slate-300">boîtes suivies</p>
               </div>
               <div className="rounded-3xl border border-white/10 bg-white/10 p-4">
-                <p className="text-xs uppercase tracking-[0.3em] text-slate-300">Qualité</p>
+                <p className="text-xs uppercase tracking-[0.3em] text-slate-300">Fiabilité</p>
                 <p className="mt-3 text-2xl font-semibold text-white">{formatNumber(data.etlErrorsCount)}</p>
-                <p className="mt-1 text-sm text-slate-300">erreurs ETL</p>
+                <p className="mt-1 text-sm text-slate-300">alertes de synchronisation</p>
               </div>
             </div>
           </div>
@@ -140,24 +140,24 @@ export function DashboardPage() {
 
         <Card className="border border-slate-200/10 bg-white/95 p-6 shadow-sm">
           <CardHeader>
-            <CardTitle>Focus métier</CardTitle>
+            <CardTitle>Lecture exécutive</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-sm text-slate-700">
             <p>
-              Cette vue est conçue pour le senior analytics et la direction courtage : indicateurs métier, détenteurs de boîtes et qualité du flux email.
+              Cette vue donne à la direction une lecture immédiate des volumes, des priorités assurance et de la dynamique des équipes.
             </p>
             <div className="grid gap-3 sm:grid-cols-1 lg:grid-cols-1">
               <div className="rounded-2xl border border-slate-200/80 bg-slate-50 p-4">
-                <p className="text-sm font-semibold text-slate-900">Flux métiers</p>
-                <p className="mt-2 text-sm text-slate-600">Suivre les volumes, la santé des imports et les boîtes les plus actives.</p>
+                <p className="text-sm font-semibold text-slate-900">Priorités métier</p>
+                <p className="mt-2 text-sm text-slate-600">Identifier rapidement les sujets qui mobilisent les équipes : sinistres, devis, attestations et réclamations.</p>
               </div>
               <div className="rounded-2xl border border-slate-200/80 bg-slate-50 p-4">
-                <p className="text-sm font-semibold text-slate-900">Qualité des données</p>
-                <p className="mt-2 text-sm text-slate-600">Gardez un œil sur le statut ETL et les erreurs pour sécuriser vos décisions.</p>
+                <p className="text-sm font-semibold text-slate-900">Fiabilité de pilotage</p>
+                <p className="mt-2 text-sm text-slate-600">Suivre la fraîcheur et la cohérence des données utilisées pour décider.</p>
               </div>
               <div className="rounded-2xl border border-slate-200/80 bg-slate-50 p-4">
-                <p className="text-sm font-semibold text-slate-900">Action rapide</p>
-                <p className="mt-2 text-sm text-slate-600">Pas besoin d’aller dans l’exécution technique pour comprendre l’essentiel.</p>
+                <p className="text-sm font-semibold text-slate-900">Décision rapide</p>
+                <p className="mt-2 text-sm text-slate-600">Lire l’essentiel en quelques secondes avant d’orienter les actions.</p>
               </div>
             </div>
           </CardContent>
@@ -168,25 +168,25 @@ export function DashboardPage() {
         <StatCard
           description="Emails archivés utiles au pilotage courtage"
           icon={Archive}
-          title="Total emails"
+          title="Portefeuille email"
           value={formatNumber(data.totalEmails)}
         />
         <StatCard
           description="Boîtes de courtage actives et suivies"
           icon={Inbox}
-          title="Boîtes mail"
+          title="Boîtes suivies"
           value={formatNumber(data.totalMailboxes)}
         />
         <StatCard
           description="Importés depuis minuit"
           icon={CalendarDays}
-          title="Importés aujourd'hui"
+          title="Nouveaux messages"
           value={formatNumber(data.importedToday)}
         />
         <StatCard
           description="Résultat sur 30 jours"
           icon={Mail}
-          title="Volume 30j"
+          title="Activité 30 jours"
           value={formatNumber(data.importedLast30Days)}
         />
       </section>
@@ -195,28 +195,28 @@ export function DashboardPage() {
         <StatCard
           description="Activité bureau de courtage sur 7 jours"
           icon={Timer}
-          title="7 derniers jours"
+          title="Activité 7 jours"
           value={formatNumber(data.importedLast7Days)}
         />
         <StatCard
           description={formatDateTime(data.lastEmailDate)}
           icon={Mail}
-          title="Dernier email daté"
+          title="Dernier signal"
           value={relativeDate(data.lastEmailDate)}
         />
         <StatCard
-          description="Santé du pipeline ETL"
+          description="Dernière synchronisation des données"
           icon={Database}
-          title="Statut ETL"
+          title="Fraîcheur des données"
           value={
             <StatusBadge value={(data.latestEtlRun?.status as string | undefined) || null} />
           }
           tone={data.latestEtlRun?.status === "failed" ? "danger" : "success"}
         />
         <StatCard
-          description="Incidents ETL détectés"
+          description="Points à vérifier avant décision"
           icon={AlertTriangle}
-          title="Erreurs ETL"
+          title="Alertes données"
           value={formatNumber(data.etlErrorsCount)}
           tone={data.etlErrorsCount > 0 ? "warning" : "success"}
         />
@@ -225,7 +225,7 @@ export function DashboardPage() {
       <section className="mt-6 grid gap-4 xl:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Volume email par mois</CardTitle>
+            <CardTitle>Tendance mensuelle du portefeuille</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer height="100%" width="100%">
@@ -248,7 +248,7 @@ export function DashboardPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Messages importés par jour</CardTitle>
+            <CardTitle>Dynamique quotidienne</CardTitle>
           </CardHeader>
           <CardContent className="h-80">
             <ResponsiveContainer height="100%" width="100%">
@@ -268,13 +268,13 @@ export function DashboardPage() {
         <TopTable
           labelField="email_address"
           rows={data.topMailboxes}
-          title="Top boîtes actives"
+          title="Boîtes les plus actives"
         />
-        <TopTable labelField="from_header" rows={data.topSenders} title="Top expéditeurs" />
+        <TopTable labelField="from_header" rows={data.topSenders} title="Interlocuteurs entrants" />
         <TopTable
           labelField="to_header"
           rows={data.topRecipients}
-          title="Top destinataires"
+          title="Destinataires internes"
         />
       </section>
     </div>
@@ -299,7 +299,7 @@ function TopTable({
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Libellé</TableHead>
+              <TableHead>Nom</TableHead>
               <TableHead className="text-right">Emails</TableHead>
             </TableRow>
           </TableHeader>

@@ -130,9 +130,10 @@ const user = await requireRole(["admin", "manager"], request);
 Regles appliquees :
 
 - `admin` accede a tout.
-- `manager` accede a dashboard, emails, analytics, followups et ETL.
-- `analyst` accede a dashboard, emails, analytics et ETL.
+- `manager` accede a dashboard, emails, analytics et followups.
+- `analyst` accede a dashboard, emails et analytics.
 - `viewer` accede seulement a dashboard et analytics.
+- La supervision technique est reservee au role `admin`.
 - `raw_path` reste reserve au role `admin`.
 - Creation/modification de relances reservees a `admin` et `manager`.
 

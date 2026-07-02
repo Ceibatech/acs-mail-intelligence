@@ -1,15 +1,6 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import {
-  Bar,
-  BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
 import { BarChart3, RefreshCw, TrendingUp } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { StatCard } from "@/components/stat-card";
@@ -42,7 +33,7 @@ type AnalyticsResponse = {
 const TOP_CHART_LIMIT = 6;
 
 function compactLabel(label: string) {
-  return label.length > 22 ? `${label.slice(0, 19)}...` : label;
+  return label.length > 28 ? `${label.slice(0, 25)}...` : label;
 }
 
 export function AnalyticsPage() {
@@ -76,7 +67,7 @@ export function AnalyticsPage() {
         .sort((a, b) => b.total - a.total)
         .slice(0, TOP_CHART_LIMIT)
         .map((category) => ({
-          label: compactLabel(category.label),
+          label: category.label,
           total: category.total,
         })),
     [data],
@@ -96,9 +87,10 @@ export function AnalyticsPage() {
       })
       .slice(0, TOP_CHART_LIMIT)
       .map((category) => ({
-        label: compactLabel(category.label),
+        label: category.label,
         "7 jours": category.last7Days,
         "30 jours": category.last30Days,
+        total: hasRecentActivity ? category.last30Days : category.total,
       }));
   }, [data]);
 
@@ -126,21 +118,21 @@ export function AnalyticsPage() {
             Actualiser
           </Button>
         }
-        description="Indicateurs courtier lus depuis les tables cache pré-calculées."
-        title="Analyse courtier"
+        description="Lecture métier des demandes assurance : sinistres, devis, attestations, réclamations et conformité."
+        title="Priorités courtage"
       />
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <StatCard
           description="Catégorie la plus volumineuse"
           icon={BarChart3}
-          title="Signal dominant"
+          title="Priorité dominante"
           value={maxCategory?.label || "-"}
         />
         <StatCard
-          description="Somme des catégories cache"
+          description="Volume qualifié par catégorie"
           icon={TrendingUp}
-          title="30 derniers jours"
+          title="Activité récente"
           value={formatNumber(recentTotal)}
         />
         {data.categories.slice(0, 2).map((category) => (
@@ -157,55 +149,37 @@ export function AnalyticsPage() {
       <section className="mt-6 grid gap-4 xl:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle>Top {TOP_CHART_LIMIT} catégories</CardTitle>
+            <CardTitle>Top {TOP_CHART_LIMIT} priorités courtage</CardTitle>
           </CardHeader>
-          <CardContent className="h-80">
-            <ResponsiveContainer height="100%" width="100%">
-              <BarChart data={topCategoryRows} layout="vertical">
-                <CartesianGrid horizontal={false} strokeDasharray="3 3" />
-                <XAxis tickFormatter={(value) => formatNumber(value)} type="number" />
-                <YAxis
-                  dataKey="label"
-                  tick={{ fontSize: 12 }}
-                  tickLine={false}
-                  type="category"
-                  width={132}
-                />
-                <Tooltip />
-                <Bar dataKey="total" fill="var(--color-primary)" radius={[0, 4, 4, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+          <CardContent>
+            <RankedBarList
+              rows={topCategoryRows.map((row) => ({
+                label: row.label,
+                value: row.total,
+              }))}
+            />
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Top {TOP_CHART_LIMIT} activité récente</CardTitle>
+            <CardTitle>Top {TOP_CHART_LIMIT} signaux récents</CardTitle>
           </CardHeader>
-          <CardContent className="h-80">
-            <ResponsiveContainer height="100%" width="100%">
-              <BarChart data={topRecentRows} layout="vertical">
-                <CartesianGrid horizontal={false} strokeDasharray="3 3" />
-                <XAxis tickFormatter={(value) => formatNumber(value)} type="number" />
-                <YAxis
-                  dataKey="label"
-                  tick={{ fontSize: 12 }}
-                  tickLine={false}
-                  type="category"
-                  width={132}
-                />
-                <Tooltip />
-                <Bar dataKey="7 jours" fill="var(--color-primary)" radius={[0, 4, 4, 0]} />
-                <Bar dataKey="30 jours" fill="#b7791f" radius={[0, 4, 4, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+          <CardContent>
+            <RankedBarList
+              rows={topRecentRows.map((row) => ({
+                label: row.label,
+                value: row.total,
+              }))}
+              tone="gold"
+            />
           </CardContent>
         </Card>
       </section>
 
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle>Catégories assurance</CardTitle>
+          <CardTitle>Lecture détaillée des priorités</CardTitle>
         </CardHeader>
         <CardContent>
           {data.categories.length ? (
@@ -243,6 +217,46 @@ export function AnalyticsPage() {
           )}
         </CardContent>
       </Card>
+    </div>
+  );
+}
+
+function RankedBarList({
+  rows,
+  tone = "green",
+}: {
+  rows: Array<{ label: string; value: number }>;
+  tone?: "green" | "gold";
+}) {
+  const maxValue = Math.max(...rows.map((row) => row.value), 1);
+  const barClass = tone === "gold" ? "bg-amber-600" : "bg-primary";
+
+  return (
+    <div className="space-y-4">
+      {rows.map((row, index) => {
+        const width = `${Math.max(8, Math.round((row.value / maxValue) * 100))}%`;
+
+        return (
+          <div key={`${row.label}-${index}`} className="space-y-2">
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex min-w-0 items-center gap-3">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-md bg-slate-100 text-xs font-semibold text-slate-700">
+                  {index + 1}
+                </span>
+                <span className="truncate text-sm font-medium text-slate-800">
+                  {compactLabel(row.label)}
+                </span>
+              </div>
+              <span className="metric-number shrink-0 text-sm font-semibold text-slate-900">
+                {formatNumber(row.value)}
+              </span>
+            </div>
+            <div className="h-2 overflow-hidden rounded-full bg-slate-100">
+              <div className={`h-full rounded-full ${barClass}`} style={{ width }} />
+            </div>
+          </div>
+        );
+      })}
     </div>
   );
 }

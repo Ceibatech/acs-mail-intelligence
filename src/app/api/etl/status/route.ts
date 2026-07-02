@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   try {
-    await requireRole(["manager", "analyst"], request);
+    await requireRole(["admin"], request);
     const data = await getEtlStatus();
     return NextResponse.json(data);
   } catch (error) {
