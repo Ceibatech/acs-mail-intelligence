@@ -162,6 +162,57 @@ export async function searchEmails(
   };
 }
 
+type BodyTableConfig = {
+  table: string;
+  idColumns: string[];
+  bodyColumns: string[];
+};
+
+const bodyTableCandidates: BodyTableConfig[] = [
+  {
+    table: "email_message_bodies",
+    idColumns: ["message_id", "email_message_id", "email_id"],
+    bodyColumns: ["body_text", "text_body", "plain_text", "content_text", "content"],
+  },
+  {
+    table: "message_bodies",
+    idColumns: ["message_id", "email_message_id", "email_id"],
+    bodyColumns: ["body_text", "text_body", "plain_text", "content_text", "content"],
+  },
+];
+
+async function firstExistingColumn(table: string, columns: string[]) {
+  for (const column of columns) {
+    if (await columnExists(table, column)) return column;
+  }
+
+  return null;
+}
+
+async function getStoredEmailBody(messageId: number) {
+  for (const candidate of bodyTableCandidates) {
+    if (!(await tableExists(candidate.table))) continue;
+
+    const idColumn = await firstExistingColumn(candidate.table, candidate.idColumns);
+    const bodyColumn = await firstExistingColumn(candidate.table, candidate.bodyColumns);
+    if (!idColumn || !bodyColumn) continue;
+
+    const row = await queryOne<RowDataPacket & { body_text: string | null }>(
+      `
+      SELECT ${bodyColumn} AS body_text
+      FROM ${candidate.table}
+      WHERE ${idColumn} = ?
+      LIMIT 1
+      `,
+      [messageId],
+    );
+
+    if (row?.body_text?.trim()) return row.body_text;
+  }
+
+  return null;
+}
+
 export async function getEmailDetail(id: string, includeRawPath: boolean) {
   const rows = await queryRows<RowDataPacket & EmailDetail>(
     `
@@ -191,6 +242,10 @@ export async function getEmailDetail(id: string, includeRawPath: boolean) {
 
   if (!rows.length) return null;
 
+  const storedBody = rows[0].body_text?.trim()
+    ? rows[0].body_text
+    : await getStoredEmailBody(Number(rows[0].id));
+
   const email: EmailDetail = {
     id: Number(rows[0].id),
     mailbox: rows[0].mailbox,
@@ -204,8 +259,8 @@ export async function getEmailDetail(id: string, includeRawPath: boolean) {
     email_date: rows[0].email_date,
     imported_at: rows[0].imported_at,
     size_bytes: rows[0].size_bytes,
-    body_text: rows[0].body_text,
-    has_body: rows[0].has_body,
+    body_text: storedBody,
+    has_body: rows[0].has_body || Boolean(storedBody),
     raw_path: includeRawPath ? rows[0].raw_path : undefined,
     tags: [],
     followups: [],

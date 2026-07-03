@@ -162,12 +162,47 @@ SHARE_ADMIN_EMAIL=admin@acs.ci
 
 ## Extraction des corps de messages
 
-La table `email_messages` peut contenir les metadonnees sans le corps du message.
-Dans ce cas, la fiche message indique que le corps reste a extraire.
+La base actuelle contient les metadonnees dans `email_messages`, mais les corps
+peuvent etre stockes dans une table separee. La fiche message lit dans cet ordre :
 
-Pour remplir `body_text`, executez le backfill sur une machine qui peut lire les
-chemins `raw_path` Maildir, par exemple le serveur cPanel ou une copie locale des
-archives :
+1. `email_message_bodies.body_text` si la table existe.
+2. `message_bodies.body_text` si la table existe.
+3. `email_messages.body_text` en secours.
+
+Schema recommande pour ton script Python d'extraction :
+
+```sql
+CREATE TABLE IF NOT EXISTS email_message_bodies (
+  message_id BIGINT UNSIGNED NOT NULL PRIMARY KEY,
+  body_text LONGTEXT NULL,
+  body_html LONGTEXT NULL,
+  extraction_status VARCHAR(32) NOT NULL DEFAULT 'ok',
+  extracted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+  source VARCHAR(100) NULL,
+  INDEX idx_email_message_bodies_status (extraction_status),
+  CONSTRAINT fk_email_message_bodies_message
+    FOREIGN KEY (message_id) REFERENCES email_messages(id)
+    ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+```
+
+Puis ton Python peut faire un upsert :
+
+```sql
+INSERT INTO email_message_bodies
+  (message_id, body_text, body_html, extraction_status, extracted_at, source)
+VALUES
+  (?, ?, ?, 'ok', NOW(), 'python-extractor')
+ON DUPLICATE KEY UPDATE
+  body_text = VALUES(body_text),
+  body_html = VALUES(body_html),
+  extraction_status = VALUES(extraction_status),
+  extracted_at = VALUES(extracted_at),
+  source = VALUES(source);
+```
+
+Option legacy : si tu veux remplir directement `email_messages.body_text`, le script
+Node fourni peut le faire depuis une machine qui lit les fichiers Maildir :
 
 ```bash
 npm run email:backfill-bodies -- --limit=1000 --batch-size=100
