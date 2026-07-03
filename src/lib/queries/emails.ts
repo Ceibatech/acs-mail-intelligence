@@ -162,6 +162,12 @@ export async function searchEmails(
   };
 }
 
+function normalizeSubjectThread(subject: string | null) {
+  return String(subject || "")
+    .replace(/^\s*((re|fw|fwd)\s*:\s*)+/i, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
 async function getBodyFromMessageDuplicate(
   messageId: string | null,
   currentMessageId: number,
@@ -204,6 +210,48 @@ async function getBodyFromMessageDuplicate(
   );
 }
 
+async function getBodyFromSubjectThread(
+  subject: string | null,
+  currentMessageId: number,
+) {
+  const threadSubject = normalizeSubjectThread(subject);
+  if (threadSubject.length < 12) return null;
+
+  return queryOne<
+    RowDataPacket &
+      Pick<
+        EmailDetail,
+        | "body_text"
+        | "body_html"
+        | "body_preview"
+        | "body_length"
+        | "extraction_status"
+        | "body_source_message_id"
+      >
+  >(
+    `
+    SELECT
+      b.body_text,
+      b.body_html,
+      b.body_preview,
+      b.body_length,
+      b.extraction_status,
+      b.message_id AS body_source_message_id
+    FROM email_messages e
+    JOIN email_message_bodies b ON b.message_id = e.id
+    WHERE e.id <> ?
+      AND e.subject LIKE ? ESCAPE '\\\\'
+      AND (
+        CHAR_LENGTH(TRIM(COALESCE(b.body_text, ''))) > 0
+        OR CHAR_LENGTH(TRIM(COALESCE(b.body_html, ''))) > 0
+        OR CHAR_LENGTH(TRIM(COALESCE(b.body_preview, ''))) > 0
+      )
+    ORDER BY COALESCE(e.email_date, e.imported_at) DESC, b.body_length DESC, b.message_id ASC
+    LIMIT 1
+    `,
+    [currentMessageId, likeValue(threadSubject)],
+  );
+}
 export async function getEmailDetail(id: string, includeRawPath: boolean) {
   const rows = await queryRows<RowDataPacket & EmailDetail>(
     `
@@ -240,10 +288,13 @@ export async function getEmailDetail(id: string, includeRawPath: boolean) {
 
   if (!rows.length) return null;
   const row = rows[0];
-  const fallbackBody =
-    row.body_text?.trim() || row.body_html?.trim() || row.body_preview?.trim()
-      ? null
-      : await getBodyFromMessageDuplicate(row.message_id, Number(row.id));
+  const hasDirectBody = Boolean(
+    row.body_text?.trim() || row.body_html?.trim() || row.body_preview?.trim(),
+  );
+  const fallbackBody = hasDirectBody
+    ? null
+    : ((await getBodyFromMessageDuplicate(row.message_id, Number(row.id))) ??
+      (await getBodyFromSubjectThread(row.subject, Number(row.id))));
   const legacyBodyText = (row as typeof row & { legacy_body_text?: string | null })
     .legacy_body_text;
   const legacyBody = legacyBodyText?.trim()
