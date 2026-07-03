@@ -52,6 +52,31 @@ function truncate(value?: string | null, limit = 1800) {
   return `${text.slice(0, limit).trim()}...`;
 }
 
+function htmlToText(value?: string | null) {
+  if (!value?.trim()) return "";
+
+  return value
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<\/(p|div|tr|li|h[1-6])>/gi, "\n")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/[ \t]+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .replace(/[ \t]{2,}/g, " ")
+    .trim();
+}
+
+function readableEmailBody(email: EmailDetail) {
+  return email.body_text || email.body_preview || htmlToText(email.body_html);
+}
+
 function formatDate(value?: string | null) {
   if (!value) return "Non renseigne";
   const date = new Date(value);
@@ -116,7 +141,7 @@ function resolveShareFrom(sharedBy: string) {
 
 function buildShareContent(input: ShareDeliveryInput) {
   const subject = `[ACS Mail] ${input.email.subject || "Message archive"}`;
-  const excerpt = truncate(input.email.body_text, 1600);
+  const excerpt = truncate(readableEmailBody(input.email), 1600);
   const note = input.note?.trim();
 
   const lines = [

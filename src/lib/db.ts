@@ -11,6 +11,7 @@ const columnExistenceCache = new Map<string, boolean>();
 const expectedTables = [
   "mailboxes",
   "email_messages",
+  "email_message_bodies",
   "app_users",
   "app_sessions",
   "app_login_attempts",

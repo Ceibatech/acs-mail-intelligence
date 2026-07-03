@@ -35,6 +35,10 @@ export type EmailDetail = EmailSearchRow & {
   cc_header: string | null;
   bcc_header: string | null;
   body_text: string | null;
+  body_html: string | null;
+  body_preview: string | null;
+  body_length: number | null;
+  extraction_status: string | null;
   has_body: number | boolean | null;
   raw_path?: string | null;
   tags: MessageTag[];

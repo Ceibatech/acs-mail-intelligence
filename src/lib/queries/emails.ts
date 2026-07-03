@@ -162,65 +162,11 @@ export async function searchEmails(
   };
 }
 
-type BodyTableConfig = {
-  table: string;
-  idColumns: string[];
-  bodyColumns: string[];
-};
-
-const bodyTableCandidates: BodyTableConfig[] = [
-  {
-    table: "email_message_bodies",
-    idColumns: ["message_id", "email_message_id", "email_id"],
-    bodyColumns: ["body_text", "text_body", "plain_text", "content_text", "content"],
-  },
-  {
-    table: "message_bodies",
-    idColumns: ["message_id", "email_message_id", "email_id"],
-    bodyColumns: ["body_text", "text_body", "plain_text", "content_text", "content"],
-  },
-];
-
-async function firstExistingColumn(table: string, columns: string[]) {
-  for (const column of columns) {
-    if (await columnExists(table, column)) return column;
-  }
-
-  return null;
-}
-
-async function getStoredEmailBody(messageId: number) {
-  for (const candidate of bodyTableCandidates) {
-    if (!(await tableExists(candidate.table))) continue;
-
-    const idColumn = await firstExistingColumn(candidate.table, candidate.idColumns);
-    const bodyColumn = await firstExistingColumn(candidate.table, candidate.bodyColumns);
-    if (!idColumn || !bodyColumn) continue;
-
-    const row = await queryOne<RowDataPacket & { body_text: string | null }>(
-      `
-      SELECT ${bodyColumn} AS body_text
-      FROM ${candidate.table}
-      WHERE ${idColumn} = ?
-      LIMIT 1
-      `,
-      [messageId],
-    );
-
-    if (row?.body_text?.trim()) return row.body_text;
-  }
-
-  return null;
-}
-
 export async function getEmailDetail(id: string, includeRawPath: boolean) {
   const rows = await queryRows<RowDataPacket & EmailDetail>(
     `
     SELECT
       e.id,
-      m.email_address AS mailbox,
-      e.folder,
-      e.message_id,
       e.subject,
       e.from_header,
       e.to_header,
@@ -228,12 +174,20 @@ export async function getEmailDetail(id: string, includeRawPath: boolean) {
       e.bcc_header,
       e.email_date,
       e.imported_at,
+      e.folder,
       e.size_bytes,
-      e.body_text,
+      e.message_id,
+      m.email_address AS mailbox,
+      b.body_text,
+      b.body_html,
+      b.body_preview,
+      b.body_length,
+      b.extraction_status,
       e.has_body,
       e.raw_path
     FROM email_messages e
     JOIN mailboxes m ON m.id = e.mailbox_id
+    LEFT JOIN email_message_bodies b ON b.message_id = e.id
     WHERE e.id = ?
     LIMIT 1
     `,
@@ -241,27 +195,31 @@ export async function getEmailDetail(id: string, includeRawPath: boolean) {
   );
 
   if (!rows.length) return null;
-
-  const storedBody = rows[0].body_text?.trim()
-    ? rows[0].body_text
-    : await getStoredEmailBody(Number(rows[0].id));
+  const row = rows[0];
+  const hasBody =
+    row.has_body ||
+    Boolean(row.body_text?.trim() || row.body_html?.trim() || row.body_preview?.trim());
 
   const email: EmailDetail = {
-    id: Number(rows[0].id),
-    mailbox: rows[0].mailbox,
-    folder: rows[0].folder,
-    message_id: rows[0].message_id,
-    subject: rows[0].subject,
-    from_header: rows[0].from_header,
-    to_header: rows[0].to_header,
-    cc_header: rows[0].cc_header,
-    bcc_header: rows[0].bcc_header,
-    email_date: rows[0].email_date,
-    imported_at: rows[0].imported_at,
-    size_bytes: rows[0].size_bytes,
-    body_text: storedBody,
-    has_body: rows[0].has_body || Boolean(storedBody),
-    raw_path: includeRawPath ? rows[0].raw_path : undefined,
+    id: Number(row.id),
+    mailbox: row.mailbox,
+    folder: row.folder,
+    message_id: row.message_id,
+    subject: row.subject,
+    from_header: row.from_header,
+    to_header: row.to_header,
+    cc_header: row.cc_header,
+    bcc_header: row.bcc_header,
+    email_date: row.email_date,
+    imported_at: row.imported_at,
+    size_bytes: row.size_bytes,
+    body_text: row.body_text,
+    body_html: row.body_html,
+    body_preview: row.body_preview,
+    body_length: row.body_length,
+    extraction_status: row.extraction_status,
+    has_body: hasBody,
+    raw_path: includeRawPath ? row.raw_path : undefined,
     tags: [],
     followups: [],
   };

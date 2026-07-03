@@ -162,23 +162,52 @@ SHARE_ADMIN_EMAIL=admin@acs.ci
 
 ## Extraction des corps de messages
 
-La base actuelle contient les metadonnees dans `email_messages`, mais les corps
-peuvent etre stockes dans une table separee. La fiche message lit dans cet ordre :
+La base garde les metadonnees dans `email_messages` et les contenus lisibles dans
+`email_message_bodies`. La fiche 360 du message lit directement cette table :
 
-1. `email_message_bodies.body_text` si la table existe.
-2. `message_bodies.body_text` si la table existe.
-3. `email_messages.body_text` en secours.
+```sql
+SELECT
+    e.id,
+    e.subject,
+    e.from_header,
+    e.to_header,
+    e.cc_header,
+    e.bcc_header,
+    e.email_date,
+    e.imported_at,
+    e.folder,
+    e.size_bytes,
+    e.message_id,
+    m.email_address AS mailbox,
+    b.body_text,
+    b.body_html,
+    b.body_preview,
+    b.body_length,
+    b.extraction_status
+FROM email_messages e
+JOIN mailboxes m ON m.id = e.mailbox_id
+LEFT JOIN email_message_bodies b ON b.message_id = e.id
+WHERE e.id = ?
+LIMIT 1;
+```
 
-Schema recommande pour ton script Python d'extraction :
+Schema propre pour ton script Python d'extraction :
 
 ```sql
 CREATE TABLE IF NOT EXISTS email_message_bodies (
-  message_id BIGINT UNSIGNED NOT NULL PRIMARY KEY,
+  id BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  message_id BIGINT UNSIGNED NOT NULL,
   body_text LONGTEXT NULL,
   body_html LONGTEXT NULL,
-  extraction_status VARCHAR(32) NOT NULL DEFAULT 'ok',
-  extracted_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-  source VARCHAR(100) NULL,
+  body_preview TEXT NULL,
+  body_length INT UNSIGNED NULL,
+  html_length INT UNSIGNED NULL,
+  extraction_status VARCHAR(32) NOT NULL DEFAULT 'success',
+  extraction_error TEXT NULL,
+  extracted_at DATETIME NULL,
+  created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  UNIQUE KEY uniq_email_message_bodies_message (message_id),
   INDEX idx_email_message_bodies_status (extraction_status),
   CONSTRAINT fk_email_message_bodies_message
     FOREIGN KEY (message_id) REFERENCES email_messages(id)
@@ -190,19 +219,24 @@ Puis ton Python peut faire un upsert :
 
 ```sql
 INSERT INTO email_message_bodies
-  (message_id, body_text, body_html, extraction_status, extracted_at, source)
+  (message_id, body_text, body_html, body_preview, body_length, html_length,
+   extraction_status, extraction_error, extracted_at)
 VALUES
-  (?, ?, ?, 'ok', NOW(), 'python-extractor')
+  (?, ?, ?, ?, ?, ?, 'success', NULL, NOW())
 ON DUPLICATE KEY UPDATE
   body_text = VALUES(body_text),
   body_html = VALUES(body_html),
+  body_preview = VALUES(body_preview),
+  body_length = VALUES(body_length),
+  html_length = VALUES(html_length),
   extraction_status = VALUES(extraction_status),
+  extraction_error = VALUES(extraction_error),
   extracted_at = VALUES(extracted_at),
-  source = VALUES(source);
+  updated_at = CURRENT_TIMESTAMP;
 ```
 
-Option legacy : si tu veux remplir directement `email_messages.body_text`, le script
-Node fourni peut le faire depuis une machine qui lit les fichiers Maildir :
+Option legacy : le script Node fourni peut encore remplir directement
+`email_messages.body_text` depuis une machine qui lit les fichiers Maildir :
 
 ```bash
 npm run email:backfill-bodies -- --limit=1000 --batch-size=100

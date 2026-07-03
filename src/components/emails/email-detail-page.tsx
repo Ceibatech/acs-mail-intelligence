@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Textarea } from "@/components/ui/textarea";
-import { formatBytes, formatDateTime } from "@/lib/format";
+import { formatBytes, formatDateTime, formatNumber } from "@/lib/format";
 import type { EmailDetail } from "@/types/email";
 
 const classifications = [
@@ -225,6 +225,17 @@ export function EmailDetailPage({ id }: { id: string }) {
     );
   }
 
+  const readableBody = getReadableBody(email);
+  const bodySource = email.body_text?.trim()
+    ? "Texte extrait"
+    : email.body_html?.trim()
+      ? "HTML converti en texte"
+      : email.body_preview?.trim()
+        ? "Aperçu extrait"
+        : null;
+  const bodyPreview = email.body_preview?.trim() || "";
+  const showBodyPreview = bodyPreview.length > 0 && bodyPreview !== readableBody;
+
   return (
     <div>
       <PageHeader
@@ -277,6 +288,18 @@ export function EmailDetailPage({ id }: { id: string }) {
                 <Meta label="Taille" value={formatBytes(email.size_bytes)} />
                 <Meta label="Date email" value={formatDateTime(email.email_date)} />
                 <Meta label="Importé le" value={formatDateTime(email.imported_at)} />
+                <Meta
+                  label="Statut extraction"
+                  value={email.extraction_status || (email.has_body ? "Disponible" : null)}
+                />
+                <Meta
+                  label="Longueur corps"
+                  value={
+                    email.body_length
+                      ? `${formatNumber(email.body_length)} caractères`
+                      : null
+                  }
+                />
                 {email.raw_path ? (
                   <Meta label="Chemin brut admin" value={email.raw_path} mono />
                 ) : null}
@@ -287,18 +310,33 @@ export function EmailDetailPage({ id }: { id: string }) {
           <Card>
             <CardHeader>
               <CardTitle>Corps du message</CardTitle>
+              {bodySource ? (
+                <p className="text-sm text-muted-foreground">
+                  {bodySource}
+                  {email.body_length
+                    ? ` - ${formatNumber(email.body_length)} caractères`
+                    : ""}
+                </p>
+              ) : null}
             </CardHeader>
-            <CardContent>
-              {email.body_text ? (
+            <CardContent className="space-y-3">
+              {showBodyPreview ? (
+                <div className="rounded-md border bg-muted/40 px-3 py-2 text-sm leading-relaxed text-muted-foreground">
+                  {bodyPreview}
+                </div>
+              ) : null}
+              {readableBody ? (
                 <Textarea
                   className="min-h-[420px] font-mono text-xs leading-relaxed"
                   readOnly
-                  value={email.body_text}
+                  value={readableBody}
                 />
               ) : (
                 <EmptyState
-                  description="Le contenu texte n'a pas encore été extrait depuis l'archive email."
-                  title="Corps à extraire"
+                  description={`Statut extraction : ${
+                    email.extraction_status || "non renseigné"
+                  }. Le corps n'est pas encore présent dans email_message_bodies.`}
+                  title="Corps non disponible"
                 />
               )}
             </CardContent>
@@ -506,6 +544,51 @@ export function EmailDetailPage({ id }: { id: string }) {
       </Modal>
     </div>
   );
+}
+
+function getReadableBody(email: EmailDetail) {
+  const text = email.body_text?.trim();
+  if (text) return text;
+
+  const htmlText = htmlToText(email.body_html);
+  if (htmlText) return htmlText;
+
+  return email.body_preview?.trim() || "";
+}
+
+function htmlToText(value?: string | null) {
+  if (!value?.trim()) return "";
+
+  return decodeHtmlEntities(
+    value
+      .replace(/<style[\s\S]*?<\/style>/gi, " ")
+      .replace(/<script[\s\S]*?<\/script>/gi, " ")
+      .replace(/<\/(p|div|tr|li|h[1-6])>/gi, "\n")
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<[^>]+>/g, " ")
+      .replace(/[ \t]+\n/g, "\n")
+      .replace(/\n{3,}/g, "\n\n")
+      .replace(/[ \t]{2,}/g, " ")
+      .trim(),
+  );
+}
+
+function decodeHtmlEntities(value: string) {
+  return value
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&#(\d+);/g, (match, code: string) => {
+      const point = Number(code);
+      return Number.isFinite(point) ? String.fromCodePoint(point) : match;
+    })
+    .replace(/&#x([0-9a-f]+);/gi, (match, code: string) => {
+      const point = Number.parseInt(code, 16);
+      return Number.isFinite(point) ? String.fromCodePoint(point) : match;
+    });
 }
 
 function Field({
