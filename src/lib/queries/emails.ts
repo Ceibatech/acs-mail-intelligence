@@ -162,6 +162,48 @@ export async function searchEmails(
   };
 }
 
+async function getBodyFromMessageDuplicate(
+  messageId: string | null,
+  currentMessageId: number,
+) {
+  if (!messageId?.trim()) return null;
+
+  return queryOne<
+    RowDataPacket &
+      Pick<
+        EmailDetail,
+        | "body_text"
+        | "body_html"
+        | "body_preview"
+        | "body_length"
+        | "extraction_status"
+        | "body_source_message_id"
+      >
+  >(
+    `
+    SELECT
+      b.body_text,
+      b.body_html,
+      b.body_preview,
+      b.body_length,
+      b.extraction_status,
+      b.message_id AS body_source_message_id
+    FROM email_messages e
+    JOIN email_message_bodies b ON b.message_id = e.id
+    WHERE e.message_id = ?
+      AND e.id <> ?
+      AND (
+        CHAR_LENGTH(TRIM(COALESCE(b.body_text, ''))) > 0
+        OR CHAR_LENGTH(TRIM(COALESCE(b.body_html, ''))) > 0
+        OR CHAR_LENGTH(TRIM(COALESCE(b.body_preview, ''))) > 0
+      )
+    ORDER BY b.body_length DESC, b.message_id ASC
+    LIMIT 1
+    `,
+    [messageId, currentMessageId],
+  );
+}
+
 export async function getEmailDetail(id: string, includeRawPath: boolean) {
   const rows = await queryRows<RowDataPacket & EmailDetail>(
     `
@@ -183,6 +225,7 @@ export async function getEmailDetail(id: string, includeRawPath: boolean) {
       b.body_preview,
       b.body_length,
       b.extraction_status,
+      b.message_id AS body_source_message_id,
       e.has_body,
       e.raw_path
     FROM email_messages e
@@ -196,9 +239,14 @@ export async function getEmailDetail(id: string, includeRawPath: boolean) {
 
   if (!rows.length) return null;
   const row = rows[0];
+  const fallbackBody =
+    row.body_text?.trim() || row.body_html?.trim() || row.body_preview?.trim()
+      ? null
+      : await getBodyFromMessageDuplicate(row.message_id, Number(row.id));
+  const body = fallbackBody || row;
   const hasBody =
     row.has_body ||
-    Boolean(row.body_text?.trim() || row.body_html?.trim() || row.body_preview?.trim());
+    Boolean(body.body_text?.trim() || body.body_html?.trim() || body.body_preview?.trim());
 
   const email: EmailDetail = {
     id: Number(row.id),
@@ -213,11 +261,14 @@ export async function getEmailDetail(id: string, includeRawPath: boolean) {
     email_date: row.email_date,
     imported_at: row.imported_at,
     size_bytes: row.size_bytes,
-    body_text: row.body_text,
-    body_html: row.body_html,
-    body_preview: row.body_preview,
-    body_length: row.body_length,
-    extraction_status: row.extraction_status,
+    body_text: body.body_text,
+    body_html: body.body_html,
+    body_preview: body.body_preview,
+    body_length: body.body_length,
+    extraction_status: body.extraction_status,
+    body_source_message_id: body.body_source_message_id
+      ? Number(body.body_source_message_id)
+      : null,
     has_body: hasBody,
     raw_path: includeRawPath ? row.raw_path : undefined,
     tags: [],

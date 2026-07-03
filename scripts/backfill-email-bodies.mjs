@@ -155,7 +155,7 @@ function cleanText(value) {
     .trim();
 }
 
-function collectTextParts(raw, collected = { plain: [], html: [] }) {
+function collectTextParts(raw, collected = { plain: [], html: [], htmlText: [] }) {
   const { header, body } = splitHeaderBody(raw);
   const headers = parseHeaders(header);
   const contentType = parseContentType(headers["content-type"]);
@@ -176,8 +176,10 @@ function collectTextParts(raw, collected = { plain: [], html: [] }) {
   }
 
   if (contentType.type === "text/html") {
-    const text = cleanText(stripHtml(decodeText(body, headers)));
-    if (text) collected.html.push(text);
+    const html = cleanText(decodeText(body, headers));
+    const text = cleanText(stripHtml(html));
+    if (html) collected.html.push(html);
+    if (text) collected.htmlText.push(text);
     return collected;
   }
 
@@ -186,8 +188,98 @@ function collectTextParts(raw, collected = { plain: [], html: [] }) {
 
 function extractEmailBody(raw, maxChars) {
   const collected = collectTextParts(raw);
-  const text = collected.plain.join("\n\n").trim() || collected.html.join("\n\n").trim();
-  return cleanText(text).slice(0, maxChars);
+  const bodyText = cleanText(
+    collected.plain.join("\n\n").trim() || collected.htmlText.join("\n\n").trim(),
+  ).slice(0, maxChars);
+  const bodyHtml = cleanText(collected.html.join("\n\n").trim()).slice(0, maxChars);
+  const bodyPreview = bodyText.replace(/\s+/g, " ").trim().slice(0, 500);
+
+  return { bodyText, bodyHtml, bodyPreview };
+}
+
+function validateTarget(target) {
+  if (["bodies", "email_messages", "both"].includes(target)) return target;
+  throw new Error("--target must be bodies, email_messages, or both");
+}
+
+function hasReadableBody(extracted) {
+  return Boolean(extracted.bodyText || extracted.bodyHtml || extracted.bodyPreview);
+}
+
+function extractionPayload(extracted, status = "success", error = null) {
+  return {
+    bodyText: extracted.bodyText || null,
+    bodyHtml: extracted.bodyHtml || null,
+    bodyPreview: extracted.bodyPreview || null,
+    bodyLength: extracted.bodyText ? extracted.bodyText.length : 0,
+    htmlLength: extracted.bodyHtml ? extracted.bodyHtml.length : 0,
+    status,
+    error,
+  };
+}
+
+async function upsertBodyRow(db, messageId, payload) {
+  await db.execute(
+    `
+    INSERT INTO email_message_bodies
+      (message_id, body_text, body_html, body_preview, body_length, html_length,
+       extraction_status, extraction_error, extracted_at)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())
+    ON DUPLICATE KEY UPDATE
+      body_text = VALUES(body_text),
+      body_html = VALUES(body_html),
+      body_preview = VALUES(body_preview),
+      body_length = VALUES(body_length),
+      html_length = VALUES(html_length),
+      extraction_status = VALUES(extraction_status),
+      extraction_error = VALUES(extraction_error),
+      extracted_at = VALUES(extracted_at),
+      updated_at = CURRENT_TIMESTAMP
+    `,
+    [
+      messageId,
+      payload.bodyText,
+      payload.bodyHtml,
+      payload.bodyPreview,
+      payload.bodyLength,
+      payload.htmlLength,
+      payload.status,
+      payload.error,
+    ],
+  );
+}
+
+function candidateQuery(target, retryFailed) {
+  if (target === "email_messages") {
+    return `
+      SELECT id, raw_path
+      FROM email_messages
+      WHERE id > ?
+        AND raw_path IS NOT NULL
+        AND (body_text IS NULL OR CHAR_LENGTH(TRIM(body_text)) = 0)
+      ORDER BY id ASC
+      LIMIT ?
+    `;
+  }
+
+  return `
+    SELECT e.id, e.raw_path
+    FROM email_messages e
+    LEFT JOIN email_message_bodies b ON b.message_id = e.id
+    WHERE e.id > ?
+      AND e.raw_path IS NOT NULL
+      AND (
+        b.message_id IS NULL
+        ${retryFailed ? "OR b.extraction_status IN ('error', 'missing_file')" : ""}
+        OR (
+          b.extraction_status = 'success'
+          AND CHAR_LENGTH(TRIM(COALESCE(b.body_text, ''))) = 0
+          AND CHAR_LENGTH(TRIM(COALESCE(b.body_html, ''))) = 0
+        )
+      )
+    ORDER BY e.id ASC
+    LIMIT ?
+  `;
 }
 
 async function main() {
@@ -197,7 +289,9 @@ async function main() {
   const batchSize = Number(option("batch-size", "100"));
   const fromId = Number(option("from-id", "0"));
   const maxBodyChars = Number(option("max-body-chars", "50000"));
+  const target = validateTarget(option("target", "bodies"));
   const dryRun = flag("dry-run");
+  const retryFailed = flag("retry-failed");
 
   const db = await mysql.createConnection({
     host: process.env.DB_HOST_IPV4 || process.env.DB_HOST,
@@ -217,18 +311,10 @@ async function main() {
 
   try {
     while (scanned < limit) {
-      const [rows] = await db.query(
-        `
-        SELECT id, raw_path
-        FROM email_messages
-        WHERE id > ?
-          AND raw_path IS NOT NULL
-          AND (body_text IS NULL OR CHAR_LENGTH(TRIM(body_text)) = 0)
-        ORDER BY id ASC
-        LIMIT ?
-        `,
-        [lastId, Math.min(batchSize, limit - scanned)],
-      );
+      const [rows] = await db.query(candidateQuery(target, retryFailed), [
+        lastId,
+        Math.min(batchSize, limit - scanned),
+      ]);
 
       if (!rows.length) break;
 
@@ -238,23 +324,57 @@ async function main() {
 
         try {
           const raw = await fs.readFile(row.raw_path);
-          const body = extractEmailBody(raw, maxBodyChars);
-          if (!body) {
+          const extracted = extractEmailBody(raw, maxBodyChars);
+          if (!hasReadableBody(extracted)) {
+            if (!dryRun && target !== "email_messages") {
+              await upsertBodyRow(
+                db,
+                row.id,
+                extractionPayload(extracted, "empty", null),
+              );
+            }
             empty += 1;
             continue;
           }
 
           if (!dryRun) {
-            await db.execute(
-              "UPDATE email_messages SET body_text = ?, has_body = 1 WHERE id = ?",
-              [body, row.id],
-            );
+            if (target !== "email_messages") {
+              await upsertBodyRow(db, row.id, extractionPayload(extracted));
+            }
+            if (target !== "bodies") {
+              await db.execute(
+                "UPDATE email_messages SET body_text = ?, has_body = 1 WHERE id = ?",
+                [extracted.bodyText || extracted.bodyPreview, row.id],
+              );
+            }
           }
           updated += 1;
         } catch (error) {
           if (error && error.code === "ENOENT") {
+            if (!dryRun && target !== "email_messages") {
+              await upsertBodyRow(
+                db,
+                row.id,
+                extractionPayload(
+                  { bodyText: "", bodyHtml: "", bodyPreview: "" },
+                  "missing_file",
+                  error.message,
+                ),
+              );
+            }
             missing += 1;
           } else {
+            if (!dryRun && target !== "email_messages") {
+              await upsertBodyRow(
+                db,
+                row.id,
+                extractionPayload(
+                  { bodyText: "", bodyHtml: "", bodyPreview: "" },
+                  "error",
+                  error instanceof Error ? error.message : String(error),
+                ),
+              );
+            }
             failed += 1;
           }
         }
@@ -268,13 +388,15 @@ async function main() {
     JSON.stringify(
       {
         dryRun,
+        target,
+        retryFailed,
         scanned,
         updated,
         empty,
         missing,
         failed,
         lastId,
-        nextCommand: `npm run email:backfill-bodies -- --from-id=${lastId}`,
+        nextCommand: `npm run email:backfill-bodies -- --target=${target} --from-id=${lastId}`,
       },
       null,
       2,

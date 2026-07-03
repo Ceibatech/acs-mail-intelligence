@@ -300,6 +300,17 @@ export function EmailDetailPage({ id }: { id: string }) {
                       : null
                   }
                 />
+                <Meta
+                  label="Source corps"
+                  value={
+                    email.body_source_message_id &&
+                    email.body_source_message_id !== email.id
+                      ? `Copie #${email.body_source_message_id}`
+                      : email.body_source_message_id
+                        ? "Message courant"
+                        : null
+                  }
+                />
                 {email.raw_path ? (
                   <Meta label="Chemin brut admin" value={email.raw_path} mono />
                 ) : null}

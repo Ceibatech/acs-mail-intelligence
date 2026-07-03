@@ -235,8 +235,8 @@ ON DUPLICATE KEY UPDATE
   updated_at = CURRENT_TIMESTAMP;
 ```
 
-Option legacy : le script Node fourni peut encore remplir directement
-`email_messages.body_text` depuis une machine qui lit les fichiers Maildir :
+Depuis cPanel ou toute machine qui voit les chemins `/home3/...`, lance le
+backfill par lots. Par defaut le script remplit `email_message_bodies` :
 
 ```bash
 npm run email:backfill-bodies -- --limit=1000 --batch-size=100
@@ -248,10 +248,23 @@ Options utiles :
 npm run email:backfill-bodies -- --dry-run --limit=100
 npm run email:backfill-bodies -- --from-id=1200000 --limit=5000
 npm run email:backfill-bodies -- --max-body-chars=80000
+npm run email:backfill-bodies -- --retry-failed --limit=1000
 ```
 
-Le script lit les fichiers bruts, extrait `text/plain`, utilise `text/html` en
-secours, puis met a jour `body_text` et `has_body`.
+Pour traiter rapidement les messages recents comme ceux de juillet 2026 :
+
+```bash
+npm run email:backfill-bodies -- --target=bodies --from-id=1224000 --limit=10000 --batch-size=200
+```
+
+Le script lit les fichiers bruts, extrait `text/plain`, garde aussi `text/html`,
+calcule `body_preview`, puis fait un upsert dans `email_message_bodies`.
+
+Option legacy si tu veux aussi remplir `email_messages.body_text` :
+
+```bash
+npm run email:backfill-bodies -- --target=both --limit=1000 --batch-size=100
+```
 
 ## Sécurité et confidentialité
 
