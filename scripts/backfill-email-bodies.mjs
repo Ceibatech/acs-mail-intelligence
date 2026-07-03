@@ -24,6 +24,13 @@ function flag(name) {
   return process.argv.includes(`--${name}`);
 }
 
+function idListOption(name) {
+  return String(option(name, ""))
+    .split(",")
+    .map((value) => Number(value.trim()))
+    .filter((value) => Number.isSafeInteger(value) && value > 0);
+}
+
 function normalizeCharset(charset) {
   const value = String(charset || "utf-8").trim().toLowerCase();
   if (value === "iso-8859-1" || value === "latin1") return "windows-1252";
@@ -249,7 +256,17 @@ async function upsertBodyRow(db, messageId, payload) {
   );
 }
 
-function candidateQuery(target, retryFailed) {
+function candidateQuery(target, retryFailed, ids = []) {
+  if (ids.length) {
+    return `
+      SELECT e.id, e.raw_path
+      FROM email_messages e
+      WHERE e.id IN (${ids.map(() => "?").join(", ")})
+        AND e.raw_path IS NOT NULL
+      ORDER BY e.id ASC
+    `;
+  }
+
   if (target === "email_messages") {
     return `
       SELECT id, raw_path
@@ -290,6 +307,7 @@ async function main() {
   const fromId = Number(option("from-id", "0"));
   const maxBodyChars = Number(option("max-body-chars", "50000"));
   const target = validateTarget(option("target", "bodies"));
+  const ids = idListOption("ids");
   const dryRun = flag("dry-run");
   const retryFailed = flag("retry-failed");
 
@@ -311,10 +329,10 @@ async function main() {
 
   try {
     while (scanned < limit) {
-      const [rows] = await db.query(candidateQuery(target, retryFailed), [
-        lastId,
-        Math.min(batchSize, limit - scanned),
-      ]);
+      const [rows] = await db.query(
+        candidateQuery(target, retryFailed, ids),
+        ids.length ? ids : [lastId, Math.min(batchSize, limit - scanned)],
+      );
 
       if (!rows.length) break;
 
@@ -379,6 +397,8 @@ async function main() {
           }
         }
       }
+
+      if (ids.length) break;
     }
   } finally {
     await db.end();
@@ -389,6 +409,7 @@ async function main() {
       {
         dryRun,
         target,
+        ids,
         retryFailed,
         scanned,
         updated,
@@ -396,7 +417,9 @@ async function main() {
         missing,
         failed,
         lastId,
-        nextCommand: `npm run email:backfill-bodies -- --target=${target} --from-id=${lastId}`,
+        nextCommand: ids.length
+          ? null
+          : `npm run email:backfill-bodies -- --target=${target} --from-id=${lastId}`,
       },
       null,
       2,

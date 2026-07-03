@@ -246,6 +246,7 @@ Options utiles :
 
 ```bash
 npm run email:backfill-bodies -- --dry-run --limit=100
+npm run email:backfill-bodies -- --ids=1227814 --target=bodies
 npm run email:backfill-bodies -- --from-id=1200000 --limit=5000
 npm run email:backfill-bodies -- --max-body-chars=80000
 npm run email:backfill-bodies -- --retry-failed --limit=1000
@@ -280,3 +281,13 @@ Pour Vercel ou une autre plateforme, ajoutez les mêmes variables d'environnemen
 ```bash
 npm run build
 ```
+
+Si l'integration GitHub -> Vercel ne redeploie pas assez vite, cree un Deploy
+Hook dans Vercel puis garde son URL dans une variable locale ou CI :
+
+```bash
+VERCEL_DEPLOY_HOOK_URL=https://api.vercel.com/v1/integrations/deploy/...
+npm run deploy:vercel-hook
+```
+
+Ne commit jamais l'URL du hook : elle declenche un deploiement production.
