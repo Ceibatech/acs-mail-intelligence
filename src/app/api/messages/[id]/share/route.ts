@@ -5,6 +5,31 @@ import { getEmailDetail, shareMessageMetadata } from "@/lib/queries/emails";
 import { deliverMessageShare } from "@/lib/share-delivery";
 import { logError } from "@/lib/logger";
 
+function htmlToText(value?: string | null) {
+  if (!value?.trim()) return "";
+  return value
+    .replace(/<style[\s\S]*?<\/style>/gi, " ")
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/gi, " ")
+    .replace(/&amp;/gi, "&")
+    .replace(/&lt;/gi, "<")
+    .replace(/&gt;/gi, ">")
+    .replace(/&quot;/gi, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/\s+\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
+
+function defaultShareNote(email: NonNullable<Awaited<ReturnType<typeof getEmailDetail>>>) {
+  const body = String(
+    email.body_text || email.body_preview || htmlToText(email.body_html) || "",
+  ).trim();
+  if (!body) return null;
+  return body.length > 2800 ? `${body.slice(0, 2800).trim()}...` : body;
+}
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -30,11 +55,13 @@ export async function POST(
       return NextResponse.json({ error: "Message introuvable." }, { status: 404 });
     }
 
+    const shareNote = String(body.note || "").trim() || defaultShareNote(email);
+
     const delivery = await deliverMessageShare({
       email,
       sharedBy: user.email,
       sharedTo,
-      note: body.note || null,
+      note: shareNote,
       detailUrl: new URL(`/emails/${id}`, request.url).toString(),
     });
 
@@ -44,7 +71,7 @@ export async function POST(
       sharedTo,
       shareChannel: delivery.provider,
       status: delivery.status === "sent" ? "sent" : "prepared",
-      note: body.note || null,
+      note: shareNote,
     });
 
     await writeAuditLog({

@@ -143,6 +143,9 @@ function buildShareContent(input: ShareDeliveryInput) {
   const subject = `[ACS Mail] ${input.email.subject || "Message archive"}`;
   const excerpt = truncate(readableEmailBody(input.email), 1600);
   const note = input.note?.trim();
+  const noteSample = note?.replace(/\s+/g, " ").slice(0, 180) || "";
+  const excerptSample = excerpt.replace(/\s+/g, " ").slice(0, 180);
+  const includeExcerpt = Boolean(excerpt && (!noteSample || noteSample !== excerptSample));
 
   const lines = [
     "Bonjour,",
@@ -154,7 +157,7 @@ function buildShareContent(input: ShareDeliveryInput) {
     `Date email : ${formatDate(input.email.email_date || input.email.imported_at)}`,
     note ? `Note : ${note}` : null,
     `Lien interne : ${input.detailUrl}`,
-    excerpt ? `Extrait du message :\n${excerpt}` : null,
+    includeExcerpt ? `Extrait du message :\n${excerpt}` : null,
   ].filter(Boolean);
 
   const text = lines.join("\n\n");
@@ -173,7 +176,7 @@ function buildShareContent(input: ShareDeliveryInput) {
       </table>
       ${note ? `<p><strong>Note :</strong> ${escapeHtml(note)}</p>` : ""}
       <p><a href="${escapeHtml(input.detailUrl)}">Ouvrir le message archive</a></p>
-      ${excerpt ? `<pre style="white-space:pre-wrap;background:#f8fafc;border:1px solid #e2e8f0;padding:12px">${escapeHtml(excerpt)}</pre>` : ""}
+      ${includeExcerpt ? `<pre style="white-space:pre-wrap;background:#f8fafc;border:1px solid #e2e8f0;padding:12px">${escapeHtml(excerpt)}</pre>` : ""}
     </div>
   `;
 

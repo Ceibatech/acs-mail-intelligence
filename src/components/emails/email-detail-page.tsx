@@ -1,8 +1,9 @@
-"use client";
+﻿"use client";
+/* eslint-disable @next/next/no-img-element */
 
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
-import { ArrowLeft, Copy, Send, Tag, TimerReset } from "lucide-react";
+import { ArrowLeft, Code2, Copy, ExternalLink, FileText, ImageIcon, Send, Tag, TimerReset } from "lucide-react";
 import { PageHeader } from "@/components/page-header";
 import { EmptyState, ErrorState, LoadingState } from "@/components/data-state";
 import { StatusBadge } from "@/components/status-badge";
@@ -30,10 +31,19 @@ const classifications = [
   "devis",
   "relance",
   "renouvellement",
-  "réclamation",
+  "rÃ©clamation",
   "attestation",
   "contrat",
 ];
+
+type BodyView = "text" | "html";
+
+type MessageImage = {
+  alt: string;
+  index: number;
+  src: string;
+  viewable: boolean;
+};
 
 type ShareResponse = {
   saved?: boolean;
@@ -54,6 +64,8 @@ export function EmailDetailPage({ id }: { id: string }) {
   const [followupOpen, setFollowupOpen] = useState(false);
   const [shareOpen, setShareOpen] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [bodyView, setBodyView] = useState<BodyView>("text");
+  const [selectedImage, setSelectedImage] = useState<MessageImage | null>(null);
   const [followupForm, setFollowupForm] = useState({
     title: "",
     priority: "medium",
@@ -101,7 +113,7 @@ export function EmailDetailPage({ id }: { id: string }) {
     if (!email) return;
     setShareForm({
       shared_to: "",
-      note: `Message #${email.id} - ${email.subject || "Sans sujet"}`,
+      note: buildShareNote(getReadableBody(email)),
     });
     setShareOpen(true);
   }
@@ -127,7 +139,7 @@ export function EmailDetailPage({ id }: { id: string }) {
         2,
       ),
     );
-    setNote("Métadonnées copiées.");
+    setNote("MÃ©tadonnÃ©es copiÃ©es.");
   }
 
   async function submitFollowup(event: FormEvent<HTMLFormElement>) {
@@ -148,12 +160,12 @@ export function EmailDetailPage({ id }: { id: string }) {
     setSubmitting(false);
 
     if (!response.ok) {
-      setNote(payload.error || "Création de relance impossible.");
+      setNote(payload.error || "CrÃ©ation de relance impossible.");
       return;
     }
 
     setFollowupOpen(false);
-    setNote(`Relance créée (#${payload.id}).`);
+    setNote(`Relance crÃ©Ã©e (#${payload.id}).`);
     loadData();
   }
 
@@ -181,19 +193,19 @@ export function EmailDetailPage({ id }: { id: string }) {
 
   function handleShareResult(payload: ShareResponse) {
     if (payload.delivery?.status === "sent") {
-      setNote("Partage envoyé. L'utilisateur est en copie.");
+      setNote("Partage envoyÃ©. L'utilisateur est en copie.");
       return;
     }
 
     if (payload.delivery?.mailtoUrl) {
       window.location.href = payload.delivery.mailtoUrl;
       setNote(
-        "Brouillon email ouvert. Le message archivé et la copie interne sont prêts.",
+        "Brouillon email ouvert. Le message archivÃ© et la copie interne sont prÃªts.",
       );
       return;
     }
 
-    setNote(payload.reason || payload.message || "Partage préparé.");
+    setNote(payload.reason || payload.message || "Partage prÃ©parÃ©.");
   }
 
   async function addTag(tag: string) {
@@ -207,8 +219,8 @@ export function EmailDetailPage({ id }: { id: string }) {
     setNote(
       response.ok
         ? payload.saved
-          ? `Tag "${tag}" ajouté.`
-          : payload.reason || "Tag préparé."
+          ? `Tag "${tag}" ajoutÃ©.`
+          : payload.reason || "Tag prÃ©parÃ©."
         : payload.error || "Tag impossible.",
     );
     if (response.ok && payload.saved) loadData();
@@ -219,7 +231,7 @@ export function EmailDetailPage({ id }: { id: string }) {
   if (!email) {
     return (
       <EmptyState
-        description="Le message demandé n'a pas été trouvé dans l'archive."
+        description="Le message demandÃ© n'a pas Ã©tÃ© trouvÃ© dans l'archive."
         title="Message introuvable"
       />
     );
@@ -231,10 +243,12 @@ export function EmailDetailPage({ id }: { id: string }) {
     : email.body_html?.trim()
       ? "HTML converti en texte"
       : email.body_preview?.trim()
-        ? "Aperçu extrait"
+        ? "AperÃ§u extrait"
         : null;
   const bodyPreview = email.body_preview?.trim() || "";
   const showBodyPreview = bodyPreview.length > 0 && bodyPreview !== readableBody;
+  const htmlPreview = getSafeHtmlPreview(email.body_html);
+  const messageImages = extractHtmlImages(email.body_html);
 
   return (
     <div>
@@ -274,20 +288,20 @@ export function EmailDetailPage({ id }: { id: string }) {
         <div className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Métadonnées</CardTitle>
+              <CardTitle>MÃ©tadonnÃ©es</CardTitle>
             </CardHeader>
             <CardContent>
               <dl className="grid gap-4 md:grid-cols-2">
-                <Meta label="Expéditeur" value={email.from_header} />
+                <Meta label="ExpÃ©diteur" value={email.from_header} />
                 <Meta label="Destinataire" value={email.to_header} />
                 <Meta label="Copie" value={email.cc_header} />
-                <Meta label="Copie cachée" value={email.bcc_header} />
-                <Meta label="Boîte" value={email.mailbox} />
+                <Meta label="Copie cachÃ©e" value={email.bcc_header} />
+                <Meta label="BoÃ®te" value={email.mailbox} />
                 <Meta label="Dossier" value={email.folder} />
                 <Meta label="Message-ID" value={email.message_id} mono />
                 <Meta label="Taille" value={formatBytes(email.size_bytes)} />
                 <Meta label="Date email" value={formatDateTime(email.email_date)} />
-                <Meta label="Importé le" value={formatDateTime(email.imported_at)} />
+                <Meta label="ImportÃ© le" value={formatDateTime(email.imported_at)} />
                 <Meta
                   label="Statut extraction"
                   value={email.extraction_status || (email.has_body ? "Disponible" : null)}
@@ -296,7 +310,7 @@ export function EmailDetailPage({ id }: { id: string }) {
                   label="Longueur corps"
                   value={
                     email.body_length
-                      ? `${formatNumber(email.body_length)} caractères`
+                      ? `${formatNumber(email.body_length)} caractÃ¨res`
                       : null
                   }
                 />
@@ -319,29 +333,105 @@ export function EmailDetailPage({ id }: { id: string }) {
           </Card>
 
           <Card>
-            <CardHeader>
-              <CardTitle>Corps du message</CardTitle>
-              {bodySource ? (
-                <p className="text-sm text-muted-foreground">
-                  {bodySource}
-                  {email.body_length
-                    ? ` - ${formatNumber(email.body_length)} caractères`
-                    : ""}
-                </p>
-              ) : null}
+            <CardHeader className="space-y-3">
+              <div className="flex flex-col gap-3 md:flex-row md:items-start md:justify-between">
+                <div>
+                  <CardTitle>Corps du message</CardTitle>
+                  {bodySource ? (
+                    <p className="mt-2 text-sm text-muted-foreground">
+                      {bodySource}
+                      {email.body_length
+                        ? ` - ${formatNumber(email.body_length)} caractères`
+                        : ""}
+                    </p>
+                  ) : null}
+                </div>
+                {readableBody || htmlPreview ? (
+                  <div className="flex flex-wrap gap-2">
+                    <Button
+                      disabled={!readableBody}
+                      onClick={() => setBodyView("text")}
+                      size="sm"
+                      type="button"
+                      variant={bodyView === "text" ? "default" : "outline"}
+                    >
+                      <FileText className="h-4 w-4" />
+                      Texte
+                    </Button>
+                    <Button
+                      disabled={!htmlPreview}
+                      onClick={() => setBodyView("html")}
+                      size="sm"
+                      type="button"
+                      variant={bodyView === "html" ? "default" : "outline"}
+                    >
+                      <Code2 className="h-4 w-4" />
+                      Email
+                    </Button>
+                  </div>
+                ) : null}
+              </div>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className="space-y-4">
               {showBodyPreview ? (
                 <div className="rounded-md border bg-muted/40 px-3 py-2 text-sm leading-relaxed text-muted-foreground">
                   {bodyPreview}
                 </div>
               ) : null}
-              {readableBody ? (
-                <Textarea
-                  className="min-h-[420px] font-mono text-xs leading-relaxed"
-                  readOnly
-                  value={readableBody}
-                />
+
+              {messageImages.length ? (
+                <div className="space-y-3 rounded-md border bg-muted/20 p-3">
+                  <div className="flex items-center gap-2 text-sm font-medium">
+                    <ImageIcon className="h-4 w-4" />
+                    Images du message
+                  </div>
+                  <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {messageImages.map((image) => (
+                      <button
+                        className="group min-w-0 rounded-md border bg-background p-2 text-left text-sm transition hover:border-primary disabled:cursor-not-allowed disabled:opacity-70"
+                        disabled={!image.viewable}
+                        key={`${image.index}-${image.src}`}
+                        onClick={() => setSelectedImage(image)}
+                        type="button"
+                      >
+                        {image.viewable ? (
+                          <img
+                            alt={image.alt}
+                            className="mb-2 aspect-video w-full rounded border object-contain"
+                            src={image.src}
+                          />
+                        ) : (
+                          <div className="mb-2 flex aspect-video items-center justify-center rounded border bg-muted text-xs text-muted-foreground">
+                            Image embarquée non disponible
+                          </div>
+                        )}
+                        <span className="block truncate font-medium">
+                          {image.alt || `Image ${image.index}`}
+                        </span>
+                        <span className="mt-1 block truncate text-xs text-muted-foreground">
+                          {image.viewable ? "Cliquer pour voir" : image.src}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              ) : null}
+
+              {readableBody || htmlPreview ? (
+                bodyView === "html" && htmlPreview ? (
+                  <div className="overflow-hidden rounded-md border bg-white">
+                    <iframe
+                      className="h-[620px] w-full bg-white"
+                      sandbox="allow-popups allow-popups-to-escape-sandbox"
+                      srcDoc={htmlPreview}
+                      title="Aperçu HTML du message"
+                    />
+                  </div>
+                ) : (
+                  <article className="max-h-[720px] overflow-auto whitespace-pre-wrap rounded-md border bg-background p-5 text-sm leading-7 text-foreground">
+                    {readableBody}
+                  </article>
+                )
               ) : (
                 <EmptyState
                   description={`Statut extraction : ${
@@ -394,7 +484,7 @@ export function EmailDetailPage({ id }: { id: string }) {
 
           <Card>
             <CardHeader>
-              <CardTitle>Relances liées</CardTitle>
+              <CardTitle>Relances liÃ©es</CardTitle>
             </CardHeader>
             <CardContent>
               {email.followups.length ? (
@@ -419,7 +509,7 @@ export function EmailDetailPage({ id }: { id: string }) {
                   </TableBody>
                 </Table>
               ) : (
-                <p className="text-sm text-muted-foreground">Aucune relance liée.</p>
+                <p className="text-sm text-muted-foreground">Aucune relance liÃ©e.</p>
               )}
             </CardContent>
           </Card>
@@ -434,13 +524,13 @@ export function EmailDetailPage({ id }: { id: string }) {
               Annuler
             </Button>
             <Button disabled={submitting} form="detail-followup-form" type="submit">
-              Créer la relance
+              CrÃ©er la relance
             </Button>
           </div>
         }
         onClose={() => setFollowupOpen(false)}
         open={followupOpen}
-        title="Créer une relance"
+        title="CrÃ©er une relance"
       >
         <form className="grid gap-4" id="detail-followup-form" onSubmit={submitFollowup}>
           <Field label="Titre">
@@ -456,7 +546,7 @@ export function EmailDetailPage({ id }: { id: string }) {
             />
           </Field>
           <div className="grid gap-4 md:grid-cols-3">
-            <Field label="Priorité">
+            <Field label="PrioritÃ©">
               <Select
                 onChange={(event) =>
                   setFollowupForm((current) => ({
@@ -472,7 +562,7 @@ export function EmailDetailPage({ id }: { id: string }) {
                 <option value="urgent">Urgente</option>
               </Select>
             </Field>
-            <Field label="Échéance">
+            <Field label="Ã‰chÃ©ance">
               <Input
                 onChange={(event) =>
                   setFollowupForm((current) => ({
@@ -484,7 +574,7 @@ export function EmailDetailPage({ id }: { id: string }) {
                 value={followupForm.due_date}
               />
             </Field>
-            <Field label="Assignée à">
+            <Field label="AssignÃ©e Ã ">
               <Input
                 onChange={(event) =>
                   setFollowupForm((current) => ({
@@ -540,7 +630,7 @@ export function EmailDetailPage({ id }: { id: string }) {
               value={shareForm.shared_to}
             />
           </Field>
-          <Field label="Note">
+          <Field label="Note / corps transmis">
             <Textarea
               onChange={(event) =>
                 setShareForm((current) => ({
@@ -548,10 +638,49 @@ export function EmailDetailPage({ id }: { id: string }) {
                   note: event.target.value,
                 }))
               }
+              className="min-h-40"
               value={shareForm.note}
             />
           </Field>
         </form>
+      </Modal>
+      <Modal
+        description={selectedImage?.src || "Image extraite du HTML du message"}
+        footer={
+          <div className="flex justify-end gap-2">
+            {selectedImage?.viewable ? (
+              <Button
+                onClick={() => window.open(selectedImage.src, "_blank", "noopener,noreferrer")}
+                type="button"
+                variant="outline"
+              >
+                <ExternalLink className="h-4 w-4" />
+                Ouvrir
+              </Button>
+            ) : null}
+            <Button onClick={() => setSelectedImage(null)} type="button">
+              Fermer
+            </Button>
+          </div>
+        }
+        onClose={() => setSelectedImage(null)}
+        open={Boolean(selectedImage)}
+        title={selectedImage?.alt || "Image du message"}
+      >
+        {selectedImage?.viewable ? (
+          <div className="max-h-[72vh] overflow-auto rounded-md border bg-muted/20 p-3">
+            <img
+              alt={selectedImage.alt}
+              className="mx-auto max-h-[68vh] max-w-full rounded bg-white object-contain"
+              src={selectedImage.src}
+            />
+          </div>
+        ) : (
+          <EmptyState
+            description="Cette image est referencee dans le HTML, mais son contenu n'est pas stocke dans les tables disponibles."
+            title="Image non disponible"
+          />
+        )}
       </Modal>
     </div>
   );
@@ -567,6 +696,73 @@ function getReadableBody(email: EmailDetail) {
   return email.body_preview?.trim() || "";
 }
 
+function buildShareNote(readableBody: string) {
+  const body = readableBody.trim();
+  if (!body) return "";
+  return truncateText(body, 2800);
+}
+
+function truncateText(value: string, limit: number) {
+  if (value.length <= limit) return value;
+  return `${value.slice(0, limit).trim()}...`;
+}
+
+function getSafeHtmlPreview(value?: string | null) {
+  if (!value?.trim()) return "";
+  const sanitized = value
+    .replace(/<script[\s\S]*?<\/script>/gi, " ")
+    .replace(/<iframe[\s\S]*?<\/iframe>/gi, " ")
+    .replace(/<object[\s\S]*?<\/object>/gi, " ")
+    .replace(/<embed[\s\S]*?<\/embed>/gi, " ")
+    .replace(/\son[a-z]+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+    .replace(/(href|src)\s*=\s*(["'])\s*javascript:[\s\S]*?\2/gi, '$1="#"');
+
+  return `<!doctype html>
+<html>
+<head>
+<meta charset="utf-8" />
+<base target="_blank" />
+<style>
+  body { color: #0f172a; font: 14px/1.55 Arial, sans-serif; margin: 0; padding: 20px; }
+  img { cursor: zoom-in; height: auto; max-width: 100%; }
+  table { max-width: 100%; }
+  a { color: #0369a1; }
+</style>
+</head>
+<body>${sanitized}</body>
+</html>`;
+}
+
+function extractHtmlImages(value?: string | null): MessageImage[] {
+  if (!value?.trim()) return [];
+  return Array.from(value.matchAll(/<img\b[^>]*>/gi))
+    .map((match, index) => {
+      const tag = match[0];
+      const src = normalizeImageSource(readHtmlAttribute(tag, "src"));
+      return {
+        alt: readHtmlAttribute(tag, "alt") || `Image ${index + 1}`,
+        index: index + 1,
+        src,
+        viewable: isViewableImageSource(src),
+      };
+    })
+    .filter((image) => image.src);
+}
+
+function readHtmlAttribute(tag: string, name: string) {
+  const pattern = new RegExp(`${name}\\s*=\\s*("([^"]*)"|'([^']*)'|([^\\s>]+))`, "i");
+  const match = tag.match(pattern);
+  return decodeHtmlEntities(match?.[2] || match?.[3] || match?.[4] || "").trim();
+}
+
+function normalizeImageSource(src: string) {
+  if (src.startsWith("//")) return `https:${src}`;
+  return src;
+}
+
+function isViewableImageSource(src: string) {
+  return /^(https?:\/\/|data:image\/)/i.test(src);
+}
 function htmlToText(value?: string | null) {
   if (!value?.trim()) return "";
 
@@ -633,7 +829,7 @@ function Meta({
         className={`mt-1 truncate text-sm ${mono ? "font-mono text-xs" : ""}`}
         title={value ? String(value) : undefined}
       >
-        {value || "Non renseigné"}
+        {value || "Non renseignÃ©"}
       </dd>
     </div>
   );
