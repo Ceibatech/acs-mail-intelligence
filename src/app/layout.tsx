@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AppShell } from "@/components/app-shell";
+import { PUBLIC_APP_ORIGIN } from "@/lib/public-url";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -14,6 +15,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(PUBLIC_APP_ORIGIN),
   title: "ACS Mail Intelligence",
   description:
     "Dashboard de recherche, monitoring ETL et analyse métier pour archives email ACS.",

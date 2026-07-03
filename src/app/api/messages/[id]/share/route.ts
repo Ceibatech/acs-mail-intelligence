@@ -4,6 +4,7 @@ import { writeAuditLog } from "@/lib/audit";
 import { getEmailDetail, shareMessageMetadata } from "@/lib/queries/emails";
 import { deliverMessageShare } from "@/lib/share-delivery";
 import { logError } from "@/lib/logger";
+import { publicAppUrl } from "@/lib/public-url";
 
 function htmlToText(value?: string | null) {
   if (!value?.trim()) return "";
@@ -62,7 +63,7 @@ export async function POST(
       sharedBy: user.email,
       sharedTo,
       note: shareNote,
-      detailUrl: new URL(`/emails/${id}`, request.url).toString(),
+      detailUrl: publicAppUrl(`/emails/${id}`),
     });
 
     const result = await shareMessageMetadata({

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { publicAppUrl } from "@/lib/public-url";
 
 const SESSION_COOKIE_NAME = "acs_session";
 
@@ -25,19 +26,19 @@ export function proxy(request: NextRequest) {
 
   if (pathname === "/") {
     return NextResponse.redirect(
-      new URL(hasSession ? "/dashboard" : "/login", request.url),
+      new URL(publicAppUrl(hasSession ? "/dashboard" : "/login")),
     );
   }
 
   if (isProtected && !hasSession) {
-    const loginUrl = new URL("/login", request.url);
+    const loginUrl = new URL(publicAppUrl("/login"));
     loginUrl.searchParams.set("next", `${pathname}${search}`);
     return NextResponse.redirect(loginUrl);
   }
 
   if (pathname === "/login" && hasSession) {
     const nextPath = getSafeNextPath(request.nextUrl.searchParams.get("next"));
-    return NextResponse.redirect(new URL(nextPath, request.url));
+    return NextResponse.redirect(new URL(publicAppUrl(nextPath)));
   }
 
   return NextResponse.next();
