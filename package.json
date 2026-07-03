@@ -9,6 +9,7 @@
     "auth:create-admin": "node scripts/create-admin.mjs",
     "deploy:vercel-hook": "node scripts/trigger-vercel-deploy.mjs",
     "email:backfill-bodies": "node scripts/backfill-email-bodies.mjs",
+    "email:sync-body-table": "node scripts/sync-email-body-table.mjs",
     "lint": "eslint ."
   },
   "dependencies": {

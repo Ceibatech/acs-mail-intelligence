@@ -235,33 +235,36 @@ ON DUPLICATE KEY UPDATE
   updated_at = CURRENT_TIMESTAMP;
 ```
 
-Depuis cPanel ou toute machine qui voit les chemins `/home3/...`, lance le
-backfill par lots. Par defaut le script remplit `email_message_bodies` :
+Si le corps est deja present dans `email_messages.body_text`, synchronise-le vers
+la table propre `email_message_bodies` sans lire de fichier :
 
 ```bash
-npm run email:backfill-bodies -- --limit=1000 --batch-size=100
+npm run email:sync-body-table -- --ids=1227814 --dry-run
+npm run email:sync-body-table -- --ids=1227814
+npm run email:sync-body-table -- --from-id=1200000 --limit=5000
 ```
 
-Options utiles :
+Si `matched` vaut `0`, cela veut dire que le corps n'est pas encore dans les
+tables pour cet `id` : ton extraction doit faire l'upsert dans
+`email_message_bodies`.
+
+Option technique seulement si tu dois extraire depuis les fichiers Maildir :
 
 ```bash
-npm run email:backfill-bodies -- --dry-run --limit=100
 npm run email:backfill-bodies -- --ids=1227814 --target=bodies
 npm run email:backfill-bodies -- --from-id=1200000 --limit=5000
 npm run email:backfill-bodies -- --max-body-chars=80000
 npm run email:backfill-bodies -- --retry-failed --limit=1000
 ```
 
-Pour traiter rapidement les messages recents comme ceux de juillet 2026 :
+Si tu dois vraiment relancer l'extraction fichier plus tard, par lots :
 
 ```bash
 npm run email:backfill-bodies -- --target=bodies --from-id=1224000 --limit=10000 --batch-size=200
 ```
 
-Le script lit les fichiers bruts, extrait `text/plain`, garde aussi `text/html`,
-calcule `body_preview`, puis fait un upsert dans `email_message_bodies`.
-
-Option legacy si tu veux aussi remplir `email_messages.body_text` :
+Option legacy du meme extracteur si tu veux aussi remplir
+`email_messages.body_text` :
 
 ```bash
 npm run email:backfill-bodies -- --target=both --limit=1000 --batch-size=100

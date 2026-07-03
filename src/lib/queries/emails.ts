@@ -226,6 +226,7 @@ export async function getEmailDetail(id: string, includeRawPath: boolean) {
       b.body_length,
       b.extraction_status,
       b.message_id AS body_source_message_id,
+      e.body_text AS legacy_body_text,
       e.has_body,
       e.raw_path
     FROM email_messages e
@@ -243,7 +244,22 @@ export async function getEmailDetail(id: string, includeRawPath: boolean) {
     row.body_text?.trim() || row.body_html?.trim() || row.body_preview?.trim()
       ? null
       : await getBodyFromMessageDuplicate(row.message_id, Number(row.id));
-  const body = fallbackBody || row;
+  const legacyBodyText = (row as typeof row & { legacy_body_text?: string | null })
+    .legacy_body_text;
+  const legacyBody = legacyBodyText?.trim()
+    ? {
+        body_text: legacyBodyText,
+        body_html: null,
+        body_preview: legacyBodyText.replace(/\s+/g, " ").trim().slice(0, 500),
+        body_length: legacyBodyText.length,
+        extraction_status: "legacy_email_messages",
+        body_source_message_id: Number(row.id),
+      }
+    : null;
+  const rowHasBody = Boolean(
+    row.body_text?.trim() || row.body_html?.trim() || row.body_preview?.trim(),
+  );
+  const body = fallbackBody || (rowHasBody ? row : legacyBody) || row;
   const hasBody =
     row.has_body ||
     Boolean(body.body_text?.trim() || body.body_html?.trim() || body.body_preview?.trim());
