@@ -297,8 +297,8 @@ export function EmailDetailPage({ id }: { id: string }) {
                 />
               ) : (
                 <EmptyState
-                  description="Aucun contenu texte n'est disponible pour ce message."
-                  title="Corps indisponible"
+                  description="Le contenu texte n'a pas encore été extrait depuis l'archive email."
+                  title="Corps à extraire"
                 />
               )}
             </CardContent>

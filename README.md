@@ -160,6 +160,30 @@ SHARE_ADMIN_EMAIL=admin@acs.ci
 - `SHARE_ADMIN_EMAIL` est optionnel et recoit une copie des partages.
 - L'utilisateur connecte est automatiquement ajoute en copie.
 
+## Extraction des corps de messages
+
+La table `email_messages` peut contenir les metadonnees sans le corps du message.
+Dans ce cas, la fiche message indique que le corps reste a extraire.
+
+Pour remplir `body_text`, executez le backfill sur une machine qui peut lire les
+chemins `raw_path` Maildir, par exemple le serveur cPanel ou une copie locale des
+archives :
+
+```bash
+npm run email:backfill-bodies -- --limit=1000 --batch-size=100
+```
+
+Options utiles :
+
+```bash
+npm run email:backfill-bodies -- --dry-run --limit=100
+npm run email:backfill-bodies -- --from-id=1200000 --limit=5000
+npm run email:backfill-bodies -- --max-body-chars=80000
+```
+
+Le script lit les fichiers bruts, extrait `text/plain`, utilise `text/html` en
+secours, puis met a jour `body_text` et `has_body`.
+
 ## Sécurité et confidentialité
 
 - Les identifiants MySQL sont conservés côté serveur.
